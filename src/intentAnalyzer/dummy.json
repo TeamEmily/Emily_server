@@ -1,0 +1,9 @@
+{
+  "training_data": [
+    {"class":"greeting", "sentence":"안녕하세요"},
+    {"class":"greeting", "sentence":"반갑습니다"},
+    {"class":"greeting", "sentence":"오랜만이네"},
+    {"class":"greeting", "sentence":"좋은 하루"},
+    {"class":"greeting", "sentence":"안녕"}
+  ]
+}
