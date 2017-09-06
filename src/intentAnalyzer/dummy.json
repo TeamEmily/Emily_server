@@ -4,6 +4,18 @@
     {"class":"greeting", "sentence":"반갑습니다"},
     {"class":"greeting", "sentence":"오랜만이네"},
     {"class":"greeting", "sentence":"좋은 하루"},
-    {"class":"greeting", "sentence":"안녕"}
+    {"class":"greeting", "sentence":"안녕"},
+    
+    {"class":"search", "sentence":"김유영 찾아줘"},
+    {"class":"search", "sentence":"문재인 관련 기사 검색해줘"},
+    {"class":"search", "sentence":"박근혜 관한 거 올려줘"},
+    {"class":"search", "sentence":"이재용 소송 결과 언급한 기사 보여줘"},
+    {"class":"search", "sentence":"탄핵 기사 검색"},
+    
+    {"class":"weather", "sentence":"오늘 날씨 어때?"},
+    {"class":"weather", "sentence":"내일 날씨 좀 알려줘"},
+    {"class":"weather", "sentence":"내일 비 와?"},
+    {"class":"weather", "sentence":"오늘 밖에 덥니?"},
+    {"class":"weather", "sentence":"이번 주에 날씨는 어떠니?"} 
   ]
 }

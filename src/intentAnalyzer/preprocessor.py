@@ -1,6 +1,7 @@
 import os
 import json
-from konlpy.tag import Mecab
+from konlpy.tag import Twitter
+import trainingSetCreater
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 words = []
@@ -12,6 +13,7 @@ def main():
         data = json.load(dummy_data)
         setData(data)
         removeDuplication()
+        trainingSetCreater.create_trainingSet(words, classes, documents)
 
 def removeDuplication():
     global classes
@@ -30,8 +32,8 @@ def setData(data):
         classes.append(obj['class'])
 
 def tokenize(str):
-    mecab = Mecab()
-    return mecab.pos(str.strip())
+    twitter = Twitter()
+    return twitter.pos(str.strip())
 
 if __name__ == '__main__':
     main()
