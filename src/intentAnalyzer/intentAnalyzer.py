@@ -1,25 +1,21 @@
 import os
 import json
 import tensorflow as tf
-# from data.processFormat import ProcessFormat
-# from data.trainingSet import TrainingSet
-# from controller.preprocessor import Preprocessor
-# from controller.trainingSetCreater import TrainingSetCreater
-# from controller.learning import Learning
-# from controller.predict import Predict
-from model import Model
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+from trainModel import Model
+from utils import Utils
 
-class IntentAnalyzer():
-    def readFile(self):
-        with open(os.path.join(BASE_DIR, '/data/dummy.json'), 'r', encoding='UTF8') as dummy_data:
-            return json.load(dummy_data)
+def analyzeIntent(str):
+    model = Model()
+    utils = Utils()
+    utils.load_voca()
+    tokenized_str = utils.tokenize(str)
+    x_data = utils.create_x_data(tokenized_str)
+    print(x_data)
+    print(model.predict([x_data]))
 
-    def analyzeIntent(self, str):
-        print('Analyze')
 
 def main():
-    intentAnalyzer = IntentAnalyzer()
+    analyzeIntent('안녕하세여 김유영이라고 해여')
 
 if __name__ == '__main__':
     main()
