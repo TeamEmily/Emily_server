@@ -1,25 +1,31 @@
 import os
 import json
-import tensorflow as tf
-# from data.processFormat import ProcessFormat
-# from data.trainingSet import TrainingSet
-# from controller.preprocessor import Preprocessor
-# from controller.trainingSetCreater import TrainingSetCreater
-# from controller.learning import Learning
-# from controller.predict import Predict
-from model import Model
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-class IntentAnalyzer():
-    def readFile(self):
-        with open(os.path.join(BASE_DIR, '/data/dummy.json'), 'r', encoding='UTF8') as dummy_data:
-            return json.load(dummy_data)
+from trainModel import Model
+from utils import Utils
 
-    def analyzeIntent(self, str):
-        print('Analyze')
+class IntentAnalyzer():
+    def __init__(self):
+        intent_json = open(os.path.join(BASE_DIR, './data/intent.json'), 'r', encoding='UTF8')
+        self.intentData = json.load(intent_json)
+        print(self.intentData)
+        self.model = Model()
+        self.utils = Utils()
+        self.utils.load_voca()
+
+
+    def analyzeIntent(self, sentense):
+        tokenized_str = self.utils.tokenize(sentense)
+        x_data = self.utils.create_x_data(tokenized_str)
+        intent_index = self.model.predict([x_data])
+        return self.intentData[str(intent_index)]
 
 def main():
     intentAnalyzer = IntentAnalyzer()
+    for w in range (10):
+        sentense = input("str: ")
+        print(intentAnalyzer.analyzeIntent(sentense))
 
 if __name__ == '__main__':
     main()
