@@ -22,7 +22,7 @@ class Model():
 
         W2 = tf.Variable(tf.random_normal([10, 3]), name='weight2')
         b2 = tf.Variable(tf.random_normal([3]), name='bias2')
-        hypothesis = tf.sigmoid(tf.matmul(layer1, W2) + b2)
+        hypothesis = tf.sigmoid(tf.matmul(layer1, W2) + b2, name='hypothesis')
 
         cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))
         train = tf.train.GradientDescentOptimizer(learning_rate=self.learning_late).minimize(cost)
@@ -51,8 +51,11 @@ class Model():
             saver.restore(sess, tf.train.latest_checkpoint('./model'))
             graph = tf.get_default_graph()
             X = graph.get_tensor_by_name('x_data:0')
-            hypothesis = graph.get_tensor_by_name('predicted:0')
-            predicted = sess.run(hypothesis, feed_dict={X: x_data})
-            intent_index = np.argmax(predicted)
+            predicted = graph.get_tensor_by_name('predicted:0')
+            hypothesis = graph.get_tensor_by_name('hypothesis:0')
+            result = sess.run(predicted, feed_dict={X: x_data})
+            intent_index = np.argmax(result)
+            if predicted[intent_index] == 0:
+                intent_index = -1
             return intent_index
 

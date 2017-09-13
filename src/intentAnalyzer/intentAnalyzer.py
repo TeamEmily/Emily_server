@@ -9,7 +9,6 @@ class IntentAnalyzer():
     def __init__(self):
         intent_json = open(os.path.join(BASE_DIR, './data/intent.json'), 'r', encoding='UTF8')
         self.intentData = json.load(intent_json)
-        print(self.intentData)
         self.model = Model()
         self.utils = Utils()
         self.utils.load_voca()
@@ -19,7 +18,10 @@ class IntentAnalyzer():
         tokenized_str = self.utils.tokenize(sentense)
         x_data = self.utils.create_x_data(tokenized_str)
         intent_index = self.model.predict([x_data])
-        return self.intentData[str(intent_index)]
+        if intent_index == -1:
+            return "Sorry We can't find intent"
+        else:
+            return self.intentData[str(intent_index)]
 
 def main():
     intentAnalyzer = IntentAnalyzer()
