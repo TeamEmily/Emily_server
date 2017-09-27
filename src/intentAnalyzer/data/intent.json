@@ -1,5 +1,14 @@
 {
-  "0":  "greeting",
-  "1": "search",
-  "2": "weather"
+  "0": {
+    "name": "greeting",
+    "params": []
+  },
+  "1": {
+    "name": "search",
+    "params": [{ "name": "keyword", "required": true}]
+  },
+  "2": {
+    "name": "weather",
+    "params": [{ "name": "date", "required": false}, { "name": "region", "required": false}]
+  }
 }

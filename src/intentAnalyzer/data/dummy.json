@@ -11,11 +11,13 @@
     {"intent": 1, "sentence":"박근혜 관한 거 올려줘"},
     {"intent": 1, "sentence":"이재용 소송 결과 언급한 기사 보여줘"},
     {"intent": 1, "sentence":"탄핵 기사 검색"},
-    
+    {"intent": 1, "sentence":"검색"},
+
     {"intent": 2, "sentence":"오늘 날씨 어때?"},
     {"intent": 2, "sentence":"내일 날씨 좀 알려줘"},
     {"intent": 2, "sentence":"내일 비 와?"},
     {"intent": 2, "sentence":"오늘 밖에 덥니?"},
-    {"intent": 2, "sentence":"이번 주에 날씨는 어떠니?"}
+    {"intent": 2, "sentence":"이번 주에 날씨는 어떠니?"},
+    {"intent": 2, "sentence":"날씨"}
   ]
 }

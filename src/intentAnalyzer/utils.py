@@ -2,16 +2,19 @@
 
 import os
 import json
-from konlpy.tag import Twitter
+#from konlpy.tag import Twitter
+from ckonlpy.tag import Twitter
+import nltk
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Utils():
     def __init__(self):
         self.vocaList = []
 
-    def tokenize(self, str):
+    def tokenize(self, sentence):
         twitter = Twitter()
-        posData = twitter.pos(str.strip())
+        posData = twitter.pos(sentence.strip())
+        print(posData)
         tokenized_sentense = []
         for tupple in posData:
             tokenized_sentense.append(tupple[0])
@@ -56,12 +59,30 @@ class Utils():
                 y_data.append(output_empty)
         return x_data, y_data
 
+    def make_chunk_bundle(self, sentence):
+        grammar = """
+        NP: {<N.*>*<Suffix>?}   # Noun phrase
+        VP: {<V.*>*}            # Verb phrase
+        AP: {<A.*>*}            # Adjective phrase
+        """
+        twitter = Twitter()
+        twitter.add_dictionary('오늘', 'Date', force=True)
+        twitter.add_dictionary('주가', 'Josa')
+        words = twitter.pos(sentence)
+        print(words)
+        parser = nltk.RegexpParser(grammar)
+        chunks = parser.parse(words)
+        print("# Print whole tree")
+        print(chunks)
+        for subtree in chunks.subtrees():
+            print(subtree)
+            # if subtree.label()=='NP':
+            #     print(' '.join((e[0] for e in list(subtree))))
+
 def main():
     utils = Utils()
     utils.load_voca()
-    x_data, y_data = utils.build_training_data()
-    print(x_data)
-    print(y_data)
+    utils.make_chunk_bundle("오늘의 주가정보에 대해 검색해줘")
 
 if __name__ == "__main__":
     main()

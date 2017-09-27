@@ -21,7 +21,7 @@ class IntentAnalyzer():
         if intent_index == -1:
             return "Sorry We can't find intent"
         else:
-            return self.intentData[str(intent_index)]
+            return self.intentData[str(intent_index)]["name"]
 
 def main():
     intentAnalyzer = IntentAnalyzer()
