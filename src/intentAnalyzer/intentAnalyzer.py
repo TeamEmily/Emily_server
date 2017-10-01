@@ -2,8 +2,8 @@ import os
 import json
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-from trainModel import Model
-from utils import Utils
+from src.intentAnalyzer.trainModel import Model
+from src.intentAnalyzer.utils import Utils
 
 class IntentAnalyzer():
     def __init__(self):

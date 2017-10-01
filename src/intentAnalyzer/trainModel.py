@@ -1,5 +1,7 @@
 import tensorflow as tf
 import numpy as np
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 tf.reset_default_graph()
 
 class Model():
@@ -47,8 +49,8 @@ class Model():
 
     def predict(self, x_data):
         with tf.Session() as sess:
-            saver = tf.train.import_meta_graph('./model/intent_model-1000.meta')
-            saver.restore(sess, tf.train.latest_checkpoint('./model'))
+            saver = tf.train.import_meta_graph(os.path.join(BASE_DIR, './model/intent_model-1000.meta'))
+            saver.restore(sess, tf.train.latest_checkpoint(os.path.join(BASE_DIR, './model')))
             graph = tf.get_default_graph()
             X = graph.get_tensor_by_name('x_data:0')
             predicted = graph.get_tensor_by_name('predicted:0')

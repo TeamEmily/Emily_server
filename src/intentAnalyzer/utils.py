@@ -2,18 +2,23 @@
 
 import os
 import json
-#from konlpy.tag import Twitter
-from ckonlpy.tag import Twitter
+from konlpy.tag import Twitter
+#from ckonlpy.tag import Twitter
+import jpype
 import nltk
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Utils():
     def __init__(self):
         self.vocaList = []
+        if jpype.isJVMStarted():
+            jpype.attachThreadToJVM()
+        self.twitter = Twitter()
 
     def tokenize(self, sentence):
-        twitter = Twitter()
-        posData = twitter.pos(sentence.strip())
+        if jpype.isJVMStarted():
+            jpype.attachThreadToJVM()
+        posData = self.twitter.pos(sentence.strip())
         print(posData)
         tokenized_sentense = []
         for tupple in posData:
@@ -27,7 +32,7 @@ class Utils():
         return bag
 
     def load_voca(self):
-        with open('./data/voca.voc', 'r', encoding='utf-8') as vocab_file:
+        with open(os.path.join(BASE_DIR, './data/voca.voc'), 'r', encoding='utf-8') as vocab_file:
             for line in vocab_file:
                 self.vocaList.append(line.strip())
 
@@ -65,10 +70,13 @@ class Utils():
         VP: {<V.*>*}            # Verb phrase
         AP: {<A.*>*}            # Adjective phrase
         """
-        twitter = Twitter()
-        twitter.add_dictionary('오늘', 'Date', force=True)
-        twitter.add_dictionary('주가', 'Josa')
-        words = twitter.pos(sentence)
+        if jpype.isJVMStarted():
+            jpype.attachThreadToJVM()
+        self.twitter.add_dictionary('오늘', 'Date', force=True)
+        self.twitter.add_dictionary('주가', 'Josa')
+        if jpype.isJVMStarted():
+            jpype.attachThreadToJVM()
+        words = self.twitter.pos(sentence)
         print(words)
         parser = nltk.RegexpParser(grammar)
         chunks = parser.parse(words)
