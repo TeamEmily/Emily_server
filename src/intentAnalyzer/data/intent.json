@@ -5,10 +5,10 @@
   },
   "1": {
     "name": "search",
-    "params": [{ "name": "keyword", "required": true}]
+    "params": [{ "name": "Keyword", "required": true}]
   },
   "2": {
     "name": "weather",
-    "params": [{ "name": "date", "required": false}, { "name": "region", "required": false}]
+    "params": [{ "name": "Date", "required": false}, { "name": "City", "required": false}]
   }
 }
