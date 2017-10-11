@@ -2,8 +2,8 @@
 
 import os
 import json
-from konlpy.tag import Twitter
-#from ckonlpy.tag import Twitter
+#from konlpy.tag import Twitter
+from customKonlpy.ckonlpy.tag import Twitter
 import jpype
 import nltk
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -14,16 +14,24 @@ class Utils():
         if jpype.isJVMStarted():
             jpype.attachThreadToJVM()
         self.twitter = Twitter()
+        self.twitter.add_custom_dictionary("오늘", "Date")
+        self.twitter.add_custom_dictionary("내일", "Date")
+        self.twitter.add_custom_dictionary("주간", "Date")
 
     def tokenize(self, sentence):
         if jpype.isJVMStarted():
             jpype.attachThreadToJVM()
         posData = self.twitter.pos(sentence.strip())
-        print(posData)
         tokenized_sentense = []
         for tupple in posData:
             tokenized_sentense.append(tupple[0])
         return tokenized_sentense
+
+    def tokenizeWithTag(self, sentence):
+        if jpype.isJVMStarted():
+            jpype.attachThreadToJVM()
+        return self.twitter.pos(sentence.strip())
+
 
     def create_x_data(self, input_voca_list):
         bag = []
