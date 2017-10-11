@@ -6,6 +6,7 @@ import json
 from customKonlpy.ckonlpy.tag import Twitter
 import jpype
 import nltk
+import time
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 class Utils():
@@ -14,9 +15,14 @@ class Utils():
         if jpype.isJVMStarted():
             jpype.attachThreadToJVM()
         self.twitter = Twitter()
-        self.twitter.add_custom_dictionary("오늘", "Date")
-        self.twitter.add_custom_dictionary("내일", "Date")
-        self.twitter.add_custom_dictionary("주간", "Date")
+        self.addCustumTag()
+        time.sleep(2)
+
+    def addCustumTag(self):
+        customTag = json.load(open(os.path.join(BASE_DIR, './data/customtag.json'), 'r', encoding='UTF8'))
+        for tag in customTag.keys():
+            for word in customTag[tag]:
+                self.twitter.add_custom_dictionary(word, tag)
 
     def tokenize(self, sentence):
         if jpype.isJVMStarted():
@@ -94,11 +100,3 @@ class Utils():
             print(subtree)
             # if subtree.label()=='NP':
             #     print(' '.join((e[0] for e in list(subtree))))
-
-def main():
-    utils = Utils()
-    utils.load_voca()
-    utils.make_chunk_bundle("오늘의 주가정보에 대해 검색해줘")
-
-if __name__ == "__main__":
-    main()

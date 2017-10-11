@@ -10,13 +10,13 @@ from customKonlpy.ckonlpy.utils import loadtxt
 
 class Twitter:
     def __init__(self, load_default_dictionary=True):
-        print('hihi')
         self._base = KoNLPyTwitter()
         self._dictionary = CustomizedDictionary()
         if load_default_dictionary:
             self._load_default_dictionary()
         self._customized_tagger = self._load_customized_tagger()
         self.tagset = tagset
+        self.add_dictionary('시', 'Noun')
     
     def _load_customized_tagger(self):        
         templatespath = '%s/data/templates/twitter_templates0' % installpath
@@ -59,7 +59,6 @@ class Twitter:
         self._dictionary.add_dictionary(words, tag)
 
     def add_custom_dictionary(self, words, tag, force=True):
-        print('add')
         if (not force) and (not (tag in self.tagset)):
             raise ValueError('%s is not available tag' % tag)
         self._dictionary.add_custom_dictionary(words, tag)

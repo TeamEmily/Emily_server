@@ -7,4 +7,9 @@ class getIntent(APIView):
         self.intentAnalyzer = IntentAnalyzer()
 
     def get(self, request, string, format=None):
-        return Response(self.intentAnalyzer.analyzeIntent(string))
+        intent, intent_num = self.intentAnalyzer.analyzeIntent(string)
+        params = self.intentAnalyzer.checkParameters(string, intent_num)
+        if ("error" in params.keys()):
+            return Response({"error": params["error"]})
+        else:
+            return Response({"intent": intent, "params": params})

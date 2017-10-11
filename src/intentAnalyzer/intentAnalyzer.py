@@ -21,7 +21,20 @@ class IntentAnalyzer():
         if intent_index == -1:
             return "Sorry We can't find intent"
         else:
-            return self.intentData[str(intent_index)]["name"]
+            return self.intentData[str(intent_index)]["name"], intent_index
+#            return self.intentData[str(intent_index)]["name"]
+
+    def checkParameters(self, sentense, intent):
+        params = self.intentData[str(intent)]["params"]
+        tokenized_sentense = self.utils.tokenizeWithTag(sentense)
+        response = {}
+        for param in params:
+            p = [idx for idx, val in enumerate(tokenized_sentense) if param["name"] == val[1]]
+            if len(p) == 0:
+                response["error"] = "we cant find " + param["name"] + " " + "value";
+            else:
+                response[param["name"]] = [tokenized_sentense[i][0] for i in p]
+        return response
 
 def main():
     intentAnalyzer = IntentAnalyzer()
