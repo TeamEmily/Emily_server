@@ -8,6 +8,7 @@ import jpype
 import nltk
 import time
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+num_intent = 3
 
 class Utils():
     def __init__(self):
@@ -69,7 +70,7 @@ class Utils():
         with open(os.path.join(BASE_DIR, './data/dummy.json'), 'r', encoding='UTF8') as dummy_data:
             data = json.load(dummy_data)
             for obj in data["training_data"]:
-                output_empty = list([0] * 3)
+                output_empty = list([0] * num_intent)
                 sentense = obj["sentence"]
                 intent = obj["intent"]
                 tokenized_voca = self.tokenize(sentense)

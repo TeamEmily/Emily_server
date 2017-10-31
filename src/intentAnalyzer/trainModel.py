@@ -3,6 +3,7 @@ import numpy as np
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 tf.reset_default_graph()
+num_intent = 3
 
 class Model():
     def __init__(self):
@@ -16,14 +17,14 @@ class Model():
 #        global_step = tf.Variable(0, trainable=False, name='global_step')
 
         X = tf.placeholder(tf.float32, [None, n], name='x_data')
-        Y = tf.placeholder(tf.float32, [None, 3])
+        Y = tf.placeholder(tf.float32, [None, num_intent])
 
         W1 = tf.Variable(tf.random_normal([n, 100]), name='weight1')
         b1 = tf.Variable(tf.random_normal([100]), name='bias1')
         layer1 = tf.sigmoid(tf.matmul(X, W1) + b1)
 
-        W2 = tf.Variable(tf.random_normal([100, 3]), name='weight2')
-        b2 = tf.Variable(tf.random_normal([3]), name='bias2')
+        W2 = tf.Variable(tf.random_normal([100, num_intent]), name='weight2')
+        b2 = tf.Variable(tf.random_normal([num_intent]), name='bias2')
         hypothesis = tf.sigmoid(tf.matmul(layer1, W2) + b2, name='hypothesis')
 
         cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))

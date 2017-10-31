@@ -24,23 +24,31 @@ class IntentAnalyzer():
             return self.intentData[str(intent_index)]["name"], intent_index
 #            return self.intentData[str(intent_index)]["name"]
 
-    def checkParameters(self, sentense, intent):
-        params = self.intentData[str(intent)]["params"]
-        tokenized_sentense = self.utils.tokenizeWithTag(sentense)
+    def checkParameters(self, sentence, intent):
         response = {}
-        for param in params:
-            p = [idx for idx, val in enumerate(tokenized_sentense) if param["name"] == val[1]]
-            if len(p) == 0:
-                response["error"] = "we cant find " + param["name"] + " " + "value";
-            else:
-                response[param["name"]] = [tokenized_sentense[i][0] for i in p]
-        return response
+        params = self.intentData[str(intent)]["params"]
+        tokenized_sentence = self.utils.tokenizeWithTag(sentence)
+        if intent == 1:
+            reservedWord = ["관한", "관련", "언급", "대한", "기사", "검색", "찾아", "어떨"]
+            nounTag = ["Noun", "Date", "City"]
 
-def main():
-    intentAnalyzer = IntentAnalyzer()
-    for w in range (10):
-        sentense = input("str: ")
-        print(intentAnalyzer.analyzeIntent(sentense))
+            idx = 0;
+            for token in tokenized_sentence:
+                if token[0] in reservedWord:
+                    break;
+                idx+=1;
+            keyword = []
+            for i in range(idx):
+                if tokenized_sentence[i][1] in nounTag:
+                    keyword.append(tokenized_sentence[i][0])
+            response[params[0]["name"]] = keyword
+            return response
 
-if __name__ == '__main__':
-    main()
+        else:
+            for param in params:
+                p = [idx for idx, val in enumerate(tokenized_sentence) if param["name"] == val[1]]
+                if len(p) == 0:
+                    response["error"] = "we cant find " + param["name"] + " " + "value";
+                else:
+                    response[param["name"]] = [tokenized_sentence[i][0] for i in p]
+            return response
