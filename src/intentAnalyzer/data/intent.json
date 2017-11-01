@@ -4,11 +4,11 @@
     "params": []
   },
   "1": {
-    "name": "search",
-    "params": [{ "name": "Keyword", "required": true}]
+    "name": "weather",
+    "params": [{ "name": "Date", "required": false, "default": "오늘"}, { "name": "City", "required": false, "default": "서울"}]
   },
   "2": {
-    "name": "weather",
-    "params": [{ "name": "Date", "required": false}, { "name": "City", "required": false}]
+    "name": "rank_team",
+    "params": [{ "name": "team", "required": false, "default": "리그"}]
   }
 }
