@@ -14,7 +14,8 @@
     {"intent": 1, "sentence":"오늘 밖에 덥니?"},
     {"intent": 1, "sentence":"이번 주에 날씨는 어떠니?"},
     {"intent": 1, "sentence":"날씨"},
-    {"intent": 1, "sentence":"팀 순위 알려줘"},
+    {"intent": 2, "sentence":"팀 순위 알려줘"},
+    {"intent": 2, "sentence":"팀 기록 알려줘"},
     {"intent": 2, "sentence":"맨체스터 유나이티드 팀 기록"},
     {"intent": 2, "sentence":"리그 기록 알려줘"},
     {"intent": 2, "sentence":"리그 순위 알려줘"},
@@ -24,6 +25,7 @@
     {"intent": 2, "sentence":"첼시 승수 알려줘"},
     {"intent": 2, "sentence":"맨체스터 시티 몇 패야?"},
     {"intent": 2, "sentence":"아스날 4위 맞아?"},
-    {"intent": 2, "sentence":"팀 기록이 어떻게 되지?"}
+    {"intent": 2, "sentence":"팀 기록이 어떻게 되지?"},
+    {"intent": 2, "sentence":"팀 기록에 대해 알려주겠니?"}
   ]
 }

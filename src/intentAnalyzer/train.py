@@ -3,7 +3,7 @@ from trainModel import Model
 
 def train():
     utils = Utils()
-    utils.load_voca()
+    utils.build_voca()
     x_data, y_data = utils.build_training_data()
     model = Model()
     model.train(x_data, y_data)

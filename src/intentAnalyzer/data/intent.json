@@ -5,10 +5,10 @@
   },
   "1": {
     "name": "weather",
-    "params": [{ "name": "Date", "required": false, "default": "오늘"}, { "name": "City", "required": false, "default": "서울"}]
+    "params": [{ "name": "Date", "required": false, "default": ["오늘"]}, { "name": "City", "required": false, "default": ["서울"]}]
   },
   "2": {
     "name": "rank_team",
-    "params": [{ "name": "team", "required": false, "default": "리그"}]
+    "params": [{ "name": "FC", "required": false, "default": ["리그"]}]
   }
 }
