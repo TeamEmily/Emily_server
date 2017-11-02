@@ -34,7 +34,7 @@ class getIntent(APIView):
     def getRecord(self, params, format=None):
         data = []
         for param in params["FC"]:
-            if len(param) == "리그":
+            if param == "리그":
                 teamrecord = Teamrecord.objects.all()
                 serializer = TeamRecordSerializer(teamrecord, many=True)
             else:
