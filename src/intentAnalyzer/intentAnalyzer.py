@@ -34,10 +34,7 @@ class IntentAnalyzer():
             p = [idx for idx, val in enumerate(tokenized_sentence) if param["name"] == val[1]]
             print(p)
             if len(p) == 0:
-                if param["required"]:
-                    response["error"] = "we cant find " + param["name"] + " " + "value"
-                else:
-                    response[param["name"]] = param["default"]
+                response["error"] = "we cant find " + param["name"] + " " + "value"
             else:
                 response[param["name"]] = [tokenized_sentence[i][0] for i in p]
         return response
