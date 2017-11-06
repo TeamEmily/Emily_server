@@ -21,13 +21,13 @@ class Model():
 
         W1 = tf.Variable(tf.random_normal([n, 100]), name='weight1')
         b1 = tf.Variable(tf.random_normal([100]), name='bias1')
-        layer1 = tf.sigmoid(tf.matmul(X, W1) + b1)
+        layer1 = tf.nn.relu(tf.matmul(X, W1) + b1)
 
         W2 = tf.Variable(tf.random_normal([100, num_intent]), name='weight2')
         b2 = tf.Variable(tf.random_normal([num_intent]), name='bias2')
         hypothesis = tf.sigmoid(tf.matmul(layer1, W2) + b2, name='hypothesis')
 
-        cost = -tf.reduce_mean(Y * tf.log(hypothesis) + (1 - Y) * tf.log(1 - hypothesis))
+        cost = -tf.reduce_mean(Y * tf.log(tf.clip_by_value(hypothesis, 1e-10, 1.0)) + (1 - Y) * tf.log(tf.clip_by_value(1-hypothesis, 1e-10, 1.0)))
         train = tf.train.GradientDescentOptimizer(learning_rate=self.learning_late).minimize(cost)
 
         predicted = tf.cast(hypothesis > 0.5, dtype=tf.float32, name='predicted')
@@ -38,7 +38,7 @@ class Model():
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
 #            saver.restore(sess, tf.train.latest_checkpoint('./model'))
-            for step in range(10001):
+            for step in range(100001):
                 sess.run(train, feed_dict={X: x_data, Y: y_data})
                 if step % 100 == 0:
                     print(step, sess.run(cost, feed_dict={X: x_data, Y: y_data}))
