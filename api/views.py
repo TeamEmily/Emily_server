@@ -5,14 +5,13 @@ from src.intentAnalyzer.intentAnalyzer import IntentAnalyzer
 from rest_framework.renderers import JSONRenderer
 from epl.models import Teamrecord
 from epl.serializers import TeamRecordSerializer
+import random
 
 intentAnalyzer = IntentAnalyzer()
 
 class getIntent(APIView):
 
     def get(self, request, format=None):
-        teamrecord = Teamrecord.objects.all()
-        serializer = TeamRecordSerializer(teamrecord, many=True)
         string = request.GET.get('str')
         intent, intent_num = intentAnalyzer.analyzeIntent(string)
         if(intent_num == -1):
@@ -27,9 +26,10 @@ class getIntent(APIView):
     def getResult(self, params, intent):
         print(intent)
         funcMap = {
-            2: self.getRecord(params)
+            0: self.sayHello,
+            2: self.getRecord
         }
-        return funcMap.get(intent)
+        return funcMap[intent](params)
 
     def getRecord(self, params, format=None):
         data = []
@@ -44,3 +44,8 @@ class getIntent(APIView):
                 print(serializer.data)
             data.append(serializer.data)
         return data
+
+    def sayHello(self, params):
+        n = random.randrange(0, 4)
+        greeting = ["너도 안녕", "반가워~", "좋은 하루~", "또 와주었구나?"]
+        return greeting[n]

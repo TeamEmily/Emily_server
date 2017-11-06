@@ -16,6 +16,8 @@
     {"intent": 1, "sentence":"날씨"},
     {"intent": 2, "sentence":"팀 순위 알려줘"},
     {"intent": 2, "sentence":"팀 기록 알려줘"},
+    {"intent": 2, "sentence":"Arsenal 경기 기록"},
+    {"intent": 2, "sentence":"리그 기록"},
     {"intent": 2, "sentence":"맨체스터 유나이티드 팀 기록"},
     {"intent": 2, "sentence":"리그 기록 알려줘"},
     {"intent": 2, "sentence":"리그 순위 알려줘"},
