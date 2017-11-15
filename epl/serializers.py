@@ -11,4 +11,4 @@ class TeamsSerializer(serializers.ModelSerializer):
 class TeamRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teamrecord
-        fields = ('teamname', 'totalpoints', 'gamesplayed', 'winnum', 'losenum', 'drawnum', 'goalscored', 'goalconceded', 'goaldifference')
+        fields = ('teamname', 'totalpoints', 'gamesplayed', 'winnum', 'losenum', 'drawnum', 'goalscored', 'goalconceded', 'goaldifference', 'ranking')

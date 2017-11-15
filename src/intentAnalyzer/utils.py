@@ -1,6 +1,8 @@
 #-*- coding: utf-8 -*-
 
 import os
+import sys
+sys.path.insert(0,'../..')
 import json
 #from konlpy.tag import Twitter
 from customKonlpy.ckonlpy.tag import Twitter

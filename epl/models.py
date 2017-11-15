@@ -76,7 +76,7 @@ class Teamrecord(models.Model):
     goalscored = models.IntegerField(db_column='GoalScored')  # Field name made lowercase.
     goalconceded = models.IntegerField(db_column='GoalConceded')  # Field name made lowercase.
     goaldifference = models.IntegerField(db_column='GoalDifference')  # Field name made lowercase.
-
+    ranking = models.IntegerField(db_column='Ranking')
     class Meta:
         managed = False
         db_table = 'teamrecord'

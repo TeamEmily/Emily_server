@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from src.intentAnalyzer.intentAnalyzer import IntentAnalyzer
 from rest_framework.renderers import JSONRenderer
-from epl.models import Teamrecord
-from epl.serializers import TeamRecordSerializer
+from epl.views import epl
+from weather.views import WeatherReporter
 import random
 
 intentAnalyzer = IntentAnalyzer()
@@ -24,26 +24,13 @@ class getIntent(APIView):
             return Response({"intent": intent, "data": data})
 
     def getResult(self, params, intent):
-        print(intent)
+        # print(intent)
         funcMap = {
             0: self.sayHello,
-            2: self.getRecord
+            1: WeatherReporter.reporter,
+            2: epl.getRanking
         }
         return funcMap[intent](params)
-
-    def getRecord(self, params, format=None):
-        data = []
-        for param in params["FC"]:
-            if param == "리그":
-                teamrecord = Teamrecord.objects.all()
-                serializer = TeamRecordSerializer(teamrecord, many=True)
-                return serializer.data
-            else:
-                teamrecord = Teamrecord.objects.get(pk=param)
-                serializer = TeamRecordSerializer(teamrecord)
-                print(serializer.data)
-            data.append(serializer.data)
-        return data
 
     def sayHello(self, params):
         n = random.randrange(0, 4)

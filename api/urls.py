@@ -20,5 +20,5 @@ from api import views
 
 urlpatterns = [
     url(r'', admin.site.urls),
-    url(r'^search/$', views.getIntent.as_view())
+    url(r'^search/$', views.getIntent.as_view()),
 ]

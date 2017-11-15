@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'epl'
+    'epl',
+    'weather',
 ]
 
 MIDDLEWARE = [
@@ -83,8 +84,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'emily',
         'USER': 'root',
-        'PASSWORD': 'rladbdud24',
-        'HOST': 'localhost',
+        'PASSWORD': '1234',
+        'HOST': '125.132.213.135',
         'PORT': '3306'
     }
 }
