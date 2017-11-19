@@ -33,12 +33,18 @@ class Twitter:
         
     def pos(self, phrase):
         eojeols = phrase.split()
+        print(eojeols)
         tagged = []
-        for eojeol in eojeols:
+        for idx, eojeol in enumerate(eojeols):
             tagged0 = self._customized_tagger.pos(eojeol)
             if tagged0:
                 tagged += tagged0
                 continue
+            if idx < len(eojeols)-1:
+                tagged0 = self._customized_tagger.pos(eojeol + ' ' + eojeols[idx+1])
+                if tagged0:
+                    tagged += tagged0
+                    continue
             tagged += self._base.pos(eojeol)
         return tagged
     

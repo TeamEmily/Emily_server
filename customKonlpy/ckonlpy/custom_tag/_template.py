@@ -1,7 +1,7 @@
 import re
 
 class SimpleTemplateTagger:
-    def __init__(self, templates, dictionary, selector=None, max_length=10):
+    def __init__(self, templates, dictionary, selector=None, max_length=20):
         self.templates = templates
         self.dictionary = dictionary
         self.max_length = max_length
