@@ -24,11 +24,12 @@ class getIntent(APIView):
             return Response({"intent": intent, "data": data})
 
     def getResult(self, params, intent):
-        # print(intent)
+        print("At apiViews getResult: ", intent)
         funcMap = {
             0: self.sayHello,
             1: WeatherReporter.reporter,
-            2: epl.getRanking
+            2: epl.getRecord,
+            3: epl.getPlayerRecord
         }
         return funcMap[intent](params)
 

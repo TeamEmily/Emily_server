@@ -12,3 +12,8 @@ class TeamRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teamrecord
         fields = ('teamname', 'totalpoints', 'gamesplayed', 'winnum', 'losenum', 'drawnum', 'goalscored', 'goalconceded', 'goaldifference', 'ranking')
+
+class PlayerRecordSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Players
+        fields = ('pl_name', 'pl_position', 'pl_num', 'team_id', 'date_of_birth', 'nationality')

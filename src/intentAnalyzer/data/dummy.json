@@ -28,6 +28,12 @@
     {"intent": 2, "sentence":"맨체스터 시티 몇 패야?"},
     {"intent": 2, "sentence":"아스날 4위 맞아?"},
     {"intent": 2, "sentence":"팀 기록이 어떻게 되지?"},
-    {"intent": 2, "sentence":"팀 기록에 대해 알려주겠니?"}
+    {"intent": 2, "sentence":"팀 기록에 대해 알려주겠니?"},
+    {"intent": 3, "sentence":"손흥민 선수 기록 좀 보여줘"},
+    {"intent": 3, "sentence":"호날도 스텟 좀 알려줘봐"},
+    {"intent": 3, "sentence":"Zlatan 플레이어 정보 알려주겠니?"},
+    {"intent": 3, "sentence":"우리흥 지금까지 선수 기록이 어떻게 되냐?"},
+    {"intent": 3, "sentence":"느그흥 몇 골 넣었냐?"},
+    {"intent": 3, "sentence":"한국 국적인 선수 전부 알려줘"}
   ]
 }

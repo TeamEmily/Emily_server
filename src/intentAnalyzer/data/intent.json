@@ -8,7 +8,11 @@
     "params": [{ "name": "Date"}, { "name": "City"}]
   },
   "2": {
-    "name": "rank_team",
+    "name": "team_stats",
     "params": [{ "name": "FC"}]
+  },
+  "3": {
+    "name": "player_stats",
+    "params": [{ "name": "Players"}]
   }
 }

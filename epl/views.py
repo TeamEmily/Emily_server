@@ -2,16 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from epl.models import Teamrecord
-from epl.serializers import TeamRecordSerializer
+from epl.models import Teamrecord, Players
+from epl.serializers import TeamRecordSerializer, PlayerRecordSerializer
 # Create your views here.
 
 class epl(APIView):
-    
-    def eplRecord(params):
-        
-        epl.getRecord(params)
-
     def getRecord(params, format=None):
         data = []
         for param in params["FC"]:
@@ -22,14 +17,13 @@ class epl(APIView):
             else:
                 teamrecord = Teamrecord.objects.get(pk=param)
                 serializer = TeamRecordSerializer(teamrecord)
-                # print(serializer.data)
             data.append(serializer.data)
         return data
 
-
-    def getRanking(params, format=None):
-        data = []
-        for param in params["FC"]:
-            teamrecord = Teamrecord.objects.order_by('-totalpoints')
-            serializer = TeamRecordSerializer(teamrecord, many=True)
-            return serializer.data
+    def getPlayerRecord(params, format=None):
+        
+        players = params["Players"][0]
+        print("getPlayerRecord: ", players)
+        playerrecord = Players.objects.filter(pl_name__icontains=players)
+        serializer = PlayerRecordSerializer(playerrecord, many=True)
+        return serializer.data
