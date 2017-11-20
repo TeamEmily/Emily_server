@@ -14,7 +14,7 @@ class Games(models.Model):
     round_id = models.IntegerField()
     home_team = models.IntegerField()
     away_team = models.IntegerField()
-    game_date = models.DateField(blank=True, null=True)
+    game_date = models.DateTimeField()
     game_referee = models.CharField(max_length=45, blank=True, null=True)
     home_score = models.IntegerField(blank=True, null=True)
     away_score = models.IntegerField(blank=True, null=True)
