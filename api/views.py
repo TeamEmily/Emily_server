@@ -39,6 +39,6 @@ class getIntent(APIView):
         greeting = ["너도 안녕", "반가워~", "좋은 하루~", "또 와주었구나?"]
         return greeting[n]
 
-    def twentyfifth_night:
+    def twentyfifth_night(self, params):
         greeting = "살아있다"
         return greeting

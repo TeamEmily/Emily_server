@@ -74,26 +74,45 @@ class epl(APIView):
         return data
 
     def getGameRecord(params, format=None):
-        data = []
-        team1 = params["FC"][0]
-        team2 = params["FC"][1]
-        t1 = Teams.objects.filter(Q(team_name__startswith=team1))
-        t2 = Teams.objects.filter(Q(team_name__startswith=team2))
+        # if len(params["FC"]) != 2:
+        #     data = {}
+        #     data["error"] = "Number of parameter for getGameRecord must be 2"
+        #     return data
+        
+        if len(params["FC"]) == 2:
+            data = []
+            team1 = params["FC"][0]
+            team2 = params["FC"][1]
+            t1 = Teams.objects.filter(Q(team_name__startswith=team1))
+            t2 = Teams.objects.filter(Q(team_name__startswith=team2))
 
-        t1serializer = TeamsSerializer(t1, many=True)
-        t2serializer = TeamsSerializer(t2, many=True)
-        t1_id = t1serializer.data[0]["team_id"]
-        t2_id = t2serializer.data[0]["team_id"]
-        teamname1 = t1serializer.data[0]["team_name"]
-        teamname2 = t2serializer.data[0]["team_name"]
-        print("IM IN getGameRecord: ", t1_id, t2_id)
-        pre_game_obj = Games.objects.filter(Q(home_team=t1_id) | Q(away_team=t1_id)).filter(Q(home_team=t2_id) | Q(away_team=t2_id))
-        gameserializer = GamesSerializer(pre_game_obj, many=True)
+            t1serializer = TeamsSerializer(t1, many=True)
+            t2serializer = TeamsSerializer(t2, many=True)
+            t1_id = t1serializer.data[0]["team_id"]
+            t2_id = t2serializer.data[0]["team_id"]
+            teamname1 = t1serializer.data[0]["team_name"]
+            teamname2 = t2serializer.data[0]["team_name"]
 
-        del gameserializer.data[0]["game_id"]
-        del gameserializer.data[0]["home_team"]
-        del gameserializer.data[0]["away_team"]
-        gameserializer.data[0]["home_team"] = teamname1
-        gameserializer.data[0]["away_team"] = teamname2
+            pre_game_obj = Games.objects.filter(Q(home_team=t1_id) | Q(away_team=t1_id)).filter(Q(home_team=t2_id) | Q(away_team=t2_id))
+            gameserializer = GamesSerializer(pre_game_obj, many=True)
 
-        return gameserializer.data
+            del gameserializer.data[0]["game_id"]
+            del gameserializer.data[0]["home_team"]
+            del gameserializer.data[0]["away_team"]
+            gameserializer.data[0]["home_team"] = teamname1
+            gameserializer.data[0]["away_team"] = teamname2
+
+            return gameserializer.data
+        elif len(params["FC"]) == 1:
+            data = []
+            team = params["FC"][0]
+            t = Teams.objects.filter(Q(team_name__startswith=team))
+            teamserializer = TeamsSerializer(t, many=True)
+            t_id = teamserializer.data[0]["team_id"]
+            teamname = teamserializer.data[0]["team_name"]
+
+            pre_game_obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id)).order_by('-game_date')
+            gameserializer = GamesSerializer(pre_game_obj, many=True)
+
+            
+            return gameserializer.data
