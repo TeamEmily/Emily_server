@@ -10,7 +10,7 @@ import jpype
 import nltk
 import time
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-num_intent = 5
+num_intent = 6
 
 class Utils():
     def __init__(self):

@@ -48,6 +48,7 @@
     {"intent": 4, "sentence":"Newcastle 이랑 Manchester United 붙어서 어떻게 됬어?"},
     {"intent": 4, "sentence":"Arsenal이랑 Manchester City 어떻게 됬냐?"},
     {"intent": 4, "sentence":"Arsenal Liverpool 경기 결과"},
-    {"intent": 4, "sentence":"Liverpool Chelsea 게임 결과"}
+    {"intent": 4, "sentence":"Liverpool Chelsea 게임 결과"},
+    {"intent": 5, "sentence":"스물다섯번째 밤"}
   ]
 }

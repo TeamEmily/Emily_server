@@ -18,5 +18,9 @@
   "4": {
     "name": "game_records",
     "params": [{ "name": "FC"}]
+  },
+  "5": {
+    "name": "twenty-fifth_night",
+    "params": []
   }
 }

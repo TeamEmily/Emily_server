@@ -29,7 +29,8 @@ class getIntent(APIView):
             1: WeatherReporter.reporter,
             2: epl.getRecord,
             3: epl.getPlayerInfo,
-            4: epl.getGameRecord
+            4: epl.getGameRecord,
+            5: self.twentyfifth_night
         }
         return funcMap[intent](params)
 
@@ -37,3 +38,7 @@ class getIntent(APIView):
         n = random.randrange(0, 4)
         greeting = ["너도 안녕", "반가워~", "좋은 하루~", "또 와주었구나?"]
         return greeting[n]
+
+    def twentyfifth_night:
+        greeting = "살아있다"
+        return greeting
