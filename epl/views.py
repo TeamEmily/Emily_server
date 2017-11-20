@@ -28,6 +28,7 @@ class epl(APIView):
         for p in players:
             playerrecord = Players.objects.filter(pl_name__icontains=p)
             playerserializer = PlayerRecordSerializer(playerrecord, many=True)
+            player_id = playerserializer.data[0]["pl_id"]
             teamid = playerserializer.data[0]["team"]
             
             teamlist = Teams.objects.get(pk=teamid)
@@ -35,22 +36,6 @@ class epl(APIView):
             playerserializer.data[0]["team_name"] = teamserializer.data["team_name"]
             
             del playerserializer.data[0]["team"]
-            data.append(playerserializer.data)
-
-            
-        return data
-
-    def getPlayerStat(params, format=None):
-        print("HI IM AT getPlayerStat")
-        data=[]
-
-        players = params["Players"]
-        print(players)
-        for p in players:
-            playerrecord = Players.objects.filter(pl_name__icontains=p)
-            playerserializer = PlayerRecordSerializer(playerrecord, many=True)
-            player_id = playerserializer.data[0]["pl_id"]
-            print("Player_id: ", player_id)
 
             stats_data = Stats.objects.filter(fk_pl__exact=player_id)
             statsserializer = StatsSerializer(stats_data, many=True)
@@ -58,24 +43,35 @@ class epl(APIView):
             goals = 0
             assists = 0
             shots = 0
+            min_played = 0
+            card_yellow = 0
+            card_red = 0
+            passes = 0
+            touches = 0
+            fouls = 0
             for i in statsserializer.data:
                 goals = goals + int(i["goals"])
                 assists = assists + int(i["assists"])
                 shots = shots + int(i["shots"])
+                min_played = min_played + int(i["min_played"])
+                card_yellow = card_yellow + int(i["card_yellow"])
+                card_red = card_red + int(i["card_red"])
+                passes = passes + int(i["passes"])
+                touches = touches + int(i["touches"])
+                fouls = fouls + int(i["fouls"]) 
             
             playerserializer.data[0]["goals"] = goals
             playerserializer.data[0]["assists"] = assists
             playerserializer.data[0]["shots"] = shots
-
-            del playerserializer.data[0]["pl_id"]
-            del playerserializer.data[0]["pl_position"]
-            del playerserializer.data[0]["pl_num"]
-            del playerserializer.data[0]["date_of_birth"]
-            del playerserializer.data[0]["nationality"]
-            del playerserializer.data[0]["team"]
+            playerserializer.data[0]["min_played"] = min_played
+            playerserializer.data[0]["card_yellow"] = card_yellow
+            playerserializer.data[0]["card_red"] = card_red
+            playerserializer.data[0]["passes"] = passes
+            playerserializer.data[0]["touches"] = touches
+            playerserializer.data[0]["fouls"] = fouls
             data.append(playerserializer.data)
-
-        return data  
+            
+        return data
 
     def getGameRecord(params, format=None):
         data = []
