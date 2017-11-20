@@ -29,8 +29,7 @@ class getIntent(APIView):
             1: WeatherReporter.reporter,
             2: epl.getRecord,
             3: epl.getPlayerInfo,
-            4: epl.getPlayerStat,
-            5: epl.getGameRecord
+            4: epl.getGameRecord
         }
         return funcMap[intent](params)
 

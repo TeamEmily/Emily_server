@@ -88,9 +88,16 @@ class epl(APIView):
         t2serializer = TeamsSerializer(t2, many=True)
         t1_id = t1serializer.data[0]["team_id"]
         t2_id = t2serializer.data[0]["team_id"]
-
+        teamname1 = t1serializer.data[0]["team_name"]
+        teamname2 = t2serializer.data[0]["team_name"]
         print("IM IN getGameRecord: ", t1_id, t2_id)
         pre_game_obj = Games.objects.filter(Q(home_team=t1_id) | Q(away_team=t1_id)).filter(Q(home_team=t2_id) | Q(away_team=t2_id))
         gameserializer = GamesSerializer(pre_game_obj, many=True)
+
+        del gameserializer.data[0]["game_id"]
+        del gameserializer.data[0]["home_team"]
+        del gameserializer.data[0]["away_team"]
+        gameserializer.data[0]["home_team"] = teamname1
+        gameserializer.data[0]["away_team"] = teamname2
 
         return gameserializer.data

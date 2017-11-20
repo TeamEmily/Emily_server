@@ -16,10 +16,6 @@
     "params": [{ "name": "Players"}]
   },
   "4": {
-    "name": "player_stats",
-    "params": [{ "name": "Players"}]
-  },
-  "5": {
     "name": "game_records",
     "params": [{ "name": "FC"}]
   }
