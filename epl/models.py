@@ -9,18 +9,33 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-class Game(models.Model):
+class Games(models.Model):
     game_id = models.IntegerField(primary_key=True)
-    round = models.ForeignKey('Round', models.DO_NOTHING)
-    home_team = models.CharField(max_length=45)
-    away_team = models.CharField(max_length=45)
-    game_date = models.CharField(max_length=45, blank=True, null=True)
+    round_id = models.IntegerField()
+    home_team = models.IntegerField()
+    away_team = models.IntegerField()
+    game_date = models.DateField(blank=True, null=True)
     game_referee = models.CharField(max_length=45, blank=True, null=True)
+    home_score = models.IntegerField(blank=True, null=True)
+    away_score = models.IntegerField(blank=True, null=True)
+    winner = models.CharField(max_length=45, blank=True, null=True)
+    home_shoot = models.IntegerField(blank=True, null=True)
+    away_shoot = models.IntegerField(blank=True, null=True)
+    home_on_target = models.IntegerField(blank=True, null=True)
+    away_on_target = models.IntegerField(blank=True, null=True)
+    home_poss = models.IntegerField(blank=True, null=True)
+    away_poss = models.IntegerField(blank=True, null=True)
+    home_foul = models.IntegerField(blank=True, null=True)
+    away_foul = models.IntegerField(blank=True, null=True)
+    home_yellow = models.IntegerField(blank=True, null=True)
+    home_red = models.IntegerField(blank=True, null=True)
+    away_yellow = models.IntegerField(blank=True, null=True)
+    away_red = models.IntegerField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'game'
-        unique_together = (('game_id', 'round', 'home_team', 'away_team'),)
+        db_table = 'games'
+        unique_together = (('game_id', 'round_id', 'home_team', 'away_team'),)
 
 
 class Players(models.Model):
@@ -48,22 +63,31 @@ class Round(models.Model):
 
 
 class Stats(models.Model):
-    stat_id = models.IntegerField(primary_key=True)
-    fk_pl = models.ForeignKey(Players, related_name='fk_pl')
-    fk_game = models.ForeignKey(Game, related_name='fk_game')
-    status = models.CharField(max_length=45, blank=True, null=True)
-    min_played = models.CharField(max_length=45, blank=True, null=True)
-    goals = models.CharField(max_length=45, blank=True, null=True)
-    assists = models.CharField(max_length=45, blank=True, null=True)
-    card_yellow = models.CharField(max_length=45, blank=True, null=True)
-    card_red = models.CharField(max_length=45, blank=True, null=True)
-    fk_round = models.ForeignKey(Game, related_name='fk_round')
+    stat_id = models.AutoField(primary_key=True)
+    fk_round = models.ForeignKey(Games, related_name='fk_round')
+    fk_game = models.ForeignKey(Games, related_name='fk_game')
     fk_team = models.ForeignKey(Players, related_name='fk_team')
+    fk_pl = models.ForeignKey(Players, related_name='fk_pl')
+    status = models.CharField(max_length=45, blank=True, null=True)
+    full_time = models.IntegerField(blank=True, null=True)
+    min_played = models.IntegerField(blank=True, null=True)
+    sub_with_id = models.IntegerField(blank=True, null=True)
+    goals = models.IntegerField(blank=True, null=True)
+    assists = models.IntegerField(blank=True, null=True)
+    card_yellow = models.IntegerField(blank=True, null=True)
+    card_red = models.IntegerField(blank=True, null=True)
+    shots = models.IntegerField(blank=True, null=True)
+    passes = models.IntegerField(blank=True, null=True)
+    touches = models.IntegerField(blank=True, null=True)
+    saves = models.IntegerField(blank=True, null=True)
+    clearance = models.IntegerField(blank=True, null=True)
+    fouls = models.IntegerField(blank=True, null=True)
+    ratings = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'stats'
-        unique_together = (('stat_id', 'fk_pl', 'fk_game', 'fk_round', 'fk_team'),)
+        unique_together = (('stat_id', 'fk_round', 'fk_game', 'fk_team', 'fk_pl'),)
 
 
 class Teamrecord(models.Model):
@@ -76,7 +100,8 @@ class Teamrecord(models.Model):
     goalscored = models.IntegerField(db_column='GoalScored')  # Field name made lowercase.
     goalconceded = models.IntegerField(db_column='GoalConceded')  # Field name made lowercase.
     goaldifference = models.IntegerField(db_column='GoalDifference')  # Field name made lowercase.
-    ranking = models.IntegerField(db_column='Ranking')
+    ranking = models.IntegerField(db_column='Ranking', blank=True, null=True)  # Field name made lowercase.
+
     class Meta:
         managed = False
         db_table = 'teamrecord'

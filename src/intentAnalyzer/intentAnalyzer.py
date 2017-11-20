@@ -15,7 +15,6 @@ class IntentAnalyzer():
 
 
     def analyzeIntent(self, sentense):
-        print(sentense)
         tokenized_str = self.utils.tokenize(sentense)
         x_data = self.utils.create_x_data(tokenized_str)
         intent_index = self.model.predict([x_data])

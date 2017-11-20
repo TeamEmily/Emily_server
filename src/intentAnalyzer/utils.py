@@ -10,7 +10,7 @@ import jpype
 import nltk
 import time
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-num_intent = 4
+num_intent = 6
 
 class Utils():
     def __init__(self):
@@ -94,12 +94,7 @@ class Utils():
         if jpype.isJVMStarted():
             jpype.attachThreadToJVM()
         words = self.twitter.pos(sentence)
-        print(words)
         parser = nltk.RegexpParser(grammar)
         chunks = parser.parse(words)
-        print("# Print whole tree")
-        print(chunks)
         for subtree in chunks.subtrees():
             print(subtree)
-            # if subtree.label()=='NP':
-            #     print(' '.join((e[0] for e in list(subtree))))

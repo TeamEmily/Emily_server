@@ -1,19 +1,29 @@
 from django.forms import widgets
 from rest_framework import serializers
-from epl.models import Teams, Stats, Teamrecord, Players
+from epl.models import Teams, Stats, Teamrecord, Players, Games
 
 
 class TeamsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teams
-        fields = ('team_id', 'team_name', 'team_stadium', 'team_manager', 'team_nickname')
+        fields = '__all__'
 
 class TeamRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teamrecord
-        fields = ('teamname', 'totalpoints', 'gamesplayed', 'winnum', 'losenum', 'drawnum', 'goalscored', 'goalconceded', 'goaldifference', 'ranking')
+        fields = '__all__'
 
 class PlayerRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = Players
-        fields = ('pl_name', 'pl_position', 'pl_num', 'team_id', 'date_of_birth', 'nationality')
+        fields = '__all__'
+
+class StatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Stats
+        fields = '__all__'
+
+class GamesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Games
+        fields = '__all__'

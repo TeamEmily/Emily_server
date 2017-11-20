@@ -3,18 +3,14 @@ import numpy as np
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 tf.reset_default_graph()
-num_intent = 4
+num_intent = 6
 
 class Model():
     def __init__(self):
         self.learning_late = 0.1
 
     def train(self, x_data, y_data):
-
-        print(x_data)
         n = len(x_data[0])
-        print(n)
-#        global_step = tf.Variable(0, trainable=False, name='global_step')
 
         X = tf.placeholder(tf.float32, [None, n], name='x_data')
         Y = tf.placeholder(tf.float32, [None, num_intent])
@@ -37,7 +33,6 @@ class Model():
 
         with tf.Session() as sess:
             sess.run(tf.global_variables_initializer())
-#            saver.restore(sess, tf.train.latest_checkpoint('./model'))
             for step in range(100001):
                 sess.run(train, feed_dict={X: x_data, Y: y_data})
                 if step % 100 == 0:
