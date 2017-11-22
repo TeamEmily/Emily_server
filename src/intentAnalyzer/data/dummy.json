@@ -13,6 +13,7 @@
     {"intent": 1, "sentence":"내일 비 와?"},
     {"intent": 1, "sentence":"오늘 밖에 덥니?"},
     {"intent": 1, "sentence":"이번 주에 날씨는 어떠니?"},
+    {"intent": 1, "sentence":"오늘 전주 날씨"},
     {"intent": 1, "sentence":"날씨"},
     {"intent": 2, "sentence":"팀 순위 알려줘"},
     {"intent": 2, "sentence":"팀 기록 알려줘"},

@@ -31,4 +31,4 @@ class GamesSerializer(serializers.ModelSerializer):
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Games
-        fields = ('home_team', 'away_team', 'game_date')
+        fields = ('home_team', 'away_team', 'game_date', 'home_score', 'away_score')

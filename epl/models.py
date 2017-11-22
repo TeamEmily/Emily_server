@@ -114,6 +114,7 @@ class Teams(models.Model):
     team_stadium = models.CharField(max_length=45)
     team_manager = models.CharField(max_length=45, blank=True, null=True)
     team_nickname = models.CharField(max_length=45, blank=True, null=True)
+    team_pic = models.TextField(blank=True, null=True)
 
     class Meta:
         managed = False
