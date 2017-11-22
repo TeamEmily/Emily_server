@@ -5,19 +5,19 @@
   },
   "1": {
     "name": "weather",
-    "params": [{ "name": "Date"}, { "name": "City"}]
+    "params": ["Date", "City"]
   },
   "2": {
     "name": "team_stats",
-    "params": [{ "name": "FC"}]
+    "params": ["FC"]
   },
   "3": {
     "name": "player_info",
-    "params": [{ "name": "Players"}]
+    "params": ["Players"]
   },
   "4": {
     "name": "game_records",
-    "params": [{ "name": "FC"}]
+    "params": ["FC"]
   },
   "5": {
     "name": "twenty-fifth_night",
@@ -25,6 +25,6 @@
   },
   "6": {
     "name": "schedule",
-    "params": [{ "name": "FC"}]
+    "params": ["FC"]
   }
 }

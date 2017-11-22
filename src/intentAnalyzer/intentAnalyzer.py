@@ -1,5 +1,6 @@
 import os
 import json
+import re
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 from src.intentAnalyzer.trainModel import Model
@@ -26,11 +27,32 @@ class IntentAnalyzer():
     def checkParameters(self, sentence, intent):
         response = {}
         params = self.intentData[str(intent)]["params"]
+        if "Date" in params:
+            sentence, outputStr = self.getDate(sentence)
+            if (len(outputStr) > 0):
+                response["Date"] = [outputStr]
         tokenized_sentence = self.utils.tokenizeWithTag(sentence)
         for param in params:
-            p = [idx for idx, val in enumerate(tokenized_sentence) if param["name"] == val[1]]
+            p = [idx for idx, val in enumerate(tokenized_sentence) if param == val[1]]
             if len(p) == 0:
-                response["error"] = "we cant find " + param["name"] + " " + "value"
+                if len(response[param]) > 0:
+                    continue
+                response["error"] = "we cant find " + param + " " + "value"
             else:
-                response[param["name"]] = [tokenized_sentence[i][0] for i in p]
+                response[param] = [tokenized_sentence[i][0] for i in p]
         return response
+
+    def getDate(self, sentence):
+        regex = re.compile('[0-1]?[0-9]월[\s]?([0-3]?[0-9]일)?')
+        matchingStr = regex.search(sentence).group()
+        outputStr = ''
+        if len(matchingStr) > 0:
+            sentence = sentence.replace(matchingStr, '')
+            regex = re.compile('[0-9][0-9]*')
+            matchingStr = regex.findall(matchingStr)
+            outputStr += matchingStr[0] + '-'
+            if (len(matchingStr) > 1):
+                outputStr += matchingStr[1]
+            else:
+                outputStr += '0'
+        return sentence, outputStr
