@@ -46,6 +46,7 @@ class Players(models.Model):
     team = models.ForeignKey('Teams', models.DO_NOTHING)
     date_of_birth = models.DateField(blank=True, null=True)
     nationality = models.CharField(max_length=45, blank=True, null=True)
+    pl_pic = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

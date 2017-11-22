@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.db.models import Q
 from epl.models import Teamrecord, Players, Teams, Stats, Games
-from epl.serializers import TeamRecordSerializer, PlayerRecordSerializer, TeamsSerializer, StatsSerializer, GamesSerializer
+from epl.serializers import TeamRecordSerializer, PlayerRecordSerializer, TeamsSerializer, StatsSerializer, GamesSerializer, ScheduleSerializer
 # Create your views here.
 
 class epl(APIView):
@@ -109,10 +109,21 @@ class epl(APIView):
             t = Teams.objects.filter(Q(team_name__startswith=team))
             teamserializer = TeamsSerializer(t, many=True)
             t_id = teamserializer.data[0]["team_id"]
-            teamname = teamserializer.data[0]["team_name"]
 
             pre_game_obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id)).order_by('-game_date')
             gameserializer = GamesSerializer(pre_game_obj, many=True)
 
             
-            return gameserializer.data
+            return gameserializer.data[0]
+    
+    def getSchedule(params, format=None):
+        data = []
+        team = params["FC"][0]
+        t = Teams.objects.filter(Q(team_name__startswith=team))
+        teamserializer = TeamsSerializer(t, many=True)
+        t_id = teamserializer.data[0]["team_id"]
+        
+        schd_obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id)).order_by('-game_date')
+        scdserializer = ScheduleSerializer(schd_obj, many=True)
+
+        return scdserializer.data

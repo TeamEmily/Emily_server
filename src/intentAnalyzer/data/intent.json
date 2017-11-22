@@ -22,5 +22,9 @@
   "5": {
     "name": "twenty-fifth_night",
     "params": []
+  },
+  "6": {
+    "name": "schedule",
+    "params": [{ "name": "FC"}]
   }
 }

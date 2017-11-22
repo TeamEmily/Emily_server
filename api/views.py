@@ -30,7 +30,8 @@ class getIntent(APIView):
             2: epl.getRecord,
             3: epl.getPlayerInfo,
             4: epl.getGameRecord,
-            5: self.twentyfifth_night
+            5: self.twentyfifth_night,
+            6: epl.getSchedule
         }
         return funcMap[intent](params)
 

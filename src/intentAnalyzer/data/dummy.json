@@ -49,6 +49,16 @@
     {"intent": 4, "sentence":"Arsenal이랑 Manchester City 어떻게 됬냐?"},
     {"intent": 4, "sentence":"Arsenal Liverpool 경기 결과"},
     {"intent": 4, "sentence":"Liverpool Chelsea 게임 결과"},
-    {"intent": 5, "sentence":"스물다섯번째 밤"}
+    {"intent": 4, "sentence":"Arsenal 최근 경기 어떻게 됬어?"},
+    {"intent": 4, "sentence":"첼시 경기 결과 좀 알려주겠니?"},
+    {"intent": 4, "sentence":"가장 최근 Liverpool 경기 결과가 어떻게 돼?"},
+    {"intent": 5, "sentence":"스물다섯번째 밤"},
+    {"intent": 6, "sentence":"Liverpool 앞으로 경기 일정 좀 알려주라"},
+    {"intent": 6, "sentence":"Arsenal 경기 일정 보여줘"},
+    {"intent": 6, "sentence":"Chelsea 향후 스케쥴이 어떻게 되니?"},
+    {"intent": 6, "sentence":"내일 Manchester United 경기 있어?"},
+    {"intent": 6, "sentence":"이번 주 Manchester City 경기 몇 시에 시작해?"},
+    {"intent": 6, "sentence":"이번 주 토트넘 경기 일정"},
+    {"intent": 6, "sentence":"이번 달 Leicester 일정"}
   ]
 }
