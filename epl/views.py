@@ -6,8 +6,17 @@ from django.db.models import Q
 from epl.models import Teamrecord, Players, Teams, Stats, Games
 from epl.serializers import TeamRecordSerializer, PlayerRecordSerializer, TeamsSerializer, StatsSerializer, GamesSerializer, ScheduleSerializer
 import datetime
+from calendar import monthrange
 
 class epl(APIView):
+
+    def dateTimeTransformer(date, format=None):
+        date = date.split('-')
+        month = date[0]
+        day = date[1]
+        
+        return month, day
+
     def getRecord(params, format=None):
         data = []
         for param in params["FC"]:
@@ -48,15 +57,7 @@ class epl(APIView):
 
                 stats_data = Stats.objects.filter(fk_pl__exact=player_id)
                 statsserializer = StatsSerializer(stats_data, many=True)
-                goals = 0
-                assists = 0
-                shots = 0
-                min_played = 0
-                card_yellow = 0
-                card_red = 0
-                passes = 0
-                touches = 0
-                fouls = 0
+                goals, assists, shots, min_played, card_yellow, card_red, passes, touches, fouls = 0
                 for i in statsserializer.data:
                     goals = goals + int(i["goals"])
                     assists = assists + int(i["assists"])
@@ -83,13 +84,15 @@ class epl(APIView):
             return data
 
     def getGameRecord(params, format=None):
+        date = params["Date"][0].split('-')
+        month = int(date[0])
+        day = int(date[1])
         if len(params["FC"]) == 2:
             data = []
             team1 = params["FC"][0]
             team2 = params["FC"][1]
             t1 = Teams.objects.filter(Q(team_name__startswith=team1))
             t2 = Teams.objects.filter(Q(team_name__startswith=team2))
-
             t1serializer = TeamsSerializer(t1, many=True)
             t2serializer = TeamsSerializer(t2, many=True)
             t1_id = t1serializer.data[0]["team_id"]
@@ -97,24 +100,49 @@ class epl(APIView):
             teamname1 = t1serializer.data[0]["team_name"]
             teamname2 = t2serializer.data[0]["team_name"]
 
-            pre_game_obj = Games.objects.filter(Q(home_team=t1_id) | Q(away_team=t1_id)).filter(Q(home_team=t2_id) | Q(away_team=t2_id))
-            gameserializer = GamesSerializer(pre_game_obj, many=True)
+            if month == 0 and day == 0:
+                d = datetime.datetime.today()
+                obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id)) & Q(game_date__lt=d)).order_by('-game_date')
+                gameserializer = GamesSerializer(obj, many=True)
+            elif month != 0 and day == 0:
+                startd = datetime.date(2017, month, 1)
+                endd = datetime.date(2017, month, monthrange(2017, month)[1])
+                obj = obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id)) & Q(game_date__range=(startd, endd)))
+                gameserializer = GamesSerializer(obj, many=True)
+            else:
+                d = datetime.date(2017, month, day)
+                obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id)) & Q(game_date__startswith=d))
+                gameserializer = GamesSerializer(obj, many=True)
 
             del gameserializer.data[0]["game_id"]
+            del gameserializer.data[0]["round_id"]
             gameserializer.data[0]["home_team"] = teamname1
             gameserializer.data[0]["away_team"] = teamname2
 
             data.extend(gameserializer.data)
             return data
+
         elif len(params["FC"]) == 1:
+            print("at getRecord:", month, day)
             data = []
             team = params["FC"][0]
             t = Teams.objects.filter(Q(team_name__startswith=team))
             teamserializer = TeamsSerializer(t, many=True)
             t_id = teamserializer.data[0]["team_id"]
 
-            pre_game_obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id)).order_by('-game_date')
-            gameserializer = GamesSerializer(pre_game_obj, many=True)
+            if month == 0 and day == 0:
+                d = datetime.datetime.today()
+                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__lt=d)).order_by('-game_date')
+                gameserializer = GamesSerializer(obj, many=True)
+            elif month != 0 and day == 0:
+                startd = datetime.date(2017, month, 1)
+                endd = datetime.date(2017, month, monthrange(2017, month)[1])
+                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__range=(startd, endd))).order_by('-game_date')
+                gameserializer = GamesSerializer(obj, many=True)
+            else:
+                d = datetime.date(2017, month, day)
+                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__startswith=d))
+                gameserializer = GamesSerializer(obj, many=True)
 
             for i in gameserializer.data:
                 home_id = i["home_team"]
@@ -127,19 +155,36 @@ class epl(APIView):
                 away_name = aw_serializer.data[0]["team_name"]
                 i["home_team"] = home_name
                 i["away_team"] = away_name
+                del i["game_id"]
+                del i["round_id"]
             data.extend(gameserializer.data)
             return data
-    
+
     def getSchedule(params, format=None):
+        date = params["Date"][0].split('-')
+        month = int(date[0])
+        day = int(date[1])
+
         data = []
         team = params["FC"][0]
         t = Teams.objects.filter(Q(team_name__startswith=team))
         teamserializer = TeamsSerializer(t, many=True)
         t_id = teamserializer.data[0]["team_id"]
         
-        date = datetime.datetime.today()
-        past_schd_obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__lt=date)).order_by('-game_date')
-        scdserializer = ScheduleSerializer(past_schd_obj, many=True)
+        if month == 0 and day == 0:
+            d = datetime.datetime.today()
+            obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__gt=d)).order_by('game_date')
+            scdserializer = ScheduleSerializer(obj, many=True)
+        elif month != 0 and day == 0:
+            startd = datetime.date(2017, month, 1)
+            endd = datetime.date(2017, month, monthrange(2017, month)[1])
+            obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__range=(startd, endd))).order_by('game_date')
+            scdserializer = ScheduleSerializer(obj, many=True)
+        else:
+            d = datetime.date(2017, month, day)
+            obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__startswith=d))
+            scdserializer = ScheduleSerializer(obj, many=True)
+
         for i in scdserializer.data:
             home_id = i["home_team"]
             away_id = i["away_team"]
@@ -152,12 +197,4 @@ class epl(APIView):
             i["home_team"] = home_name
             i["away_team"] = away_name
         data.extend(scdserializer.data)
-
-        try:
-            after_schd_obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__gt=date)).order_by('game_date')
-        except Games.DoesNotExist:
-            after_schd_obj = None
-        else:
-            after_scdserializer = ScheduleSerializer(after_schd_obj, many=True)
-            data.extend(after_scdserializer.data)
         return data
