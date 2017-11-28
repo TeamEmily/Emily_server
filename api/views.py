@@ -23,7 +23,8 @@ class getIntent(APIView):
         print("Analized intent is", intent_num)
         print("Previous Intent Number was:", previous_intentNum)
         print("Previous Parameter was:", previous_params)
-        
+        temp_intent_num = intent_num
+        temp_intent = intent
         if(intent_num == -1):
             # return Response({"error": intent})
             if previous_intentNum == -1:
@@ -40,7 +41,10 @@ class getIntent(APIView):
             if len(previous_params) == 0:
                 return Response({"error": params["error"]})
             else:
+                print("im here")
+                previous_params.update(params)
                 params = previous_params
+                del params['error']
 
         print("now Intent number is:", intent_num)
         print("and params is:", params)
@@ -58,7 +62,8 @@ class getIntent(APIView):
             3: epl.getPlayerInfo,
             4: epl.getGameRecord,
             5: self.twentyfifth_night,
-            6: epl.getSchedule
+            6: epl.getSchedule,
+            7: epl.playerPerformance
         }
         data, message = funcMap[intent](params)
         return data, message

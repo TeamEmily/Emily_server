@@ -8,13 +8,24 @@ import datetime
 class WeatherReporter(APIView):
 
     def reporter(params):
+        if params["Date"] == ["00-00"]:
+            message = "we can't find Date value"
+            return params, message 
+        try:
+            params["City"]
+        except KeyError:
+            message = "we can't find City value"
+            return params, message
+        
         date = params["Date"][0]
         city = params["City"][0]
         if date == "오늘":
             data = WeatherReporter.WeatherToday(city)
         elif date == "내일":
             data = WeatherReporter.WeatherTomorrow(city)
-        return data
+
+        message = ":D"
+        return data, message
 
     def WeatherToday(city):
         date = datetime.date.today()
