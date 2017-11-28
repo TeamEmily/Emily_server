@@ -16,7 +16,7 @@ class Twitter:
             self._load_default_dictionary()
         self._customized_tagger = self._load_customized_tagger()
         self.tagset = tagset
-        self.add_dictionary('시', 'Noun')
+        self.add_custom_dictionary('?', 'Punctuation')
     
     def _load_customized_tagger(self):        
         templatespath = '%s/data/templates/twitter_templates0' % installpath
