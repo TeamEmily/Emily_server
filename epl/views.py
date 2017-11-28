@@ -25,10 +25,11 @@ class epl(APIView):
                 serializer = TeamRecordSerializer(teamrecord, many=True)
                 return serializer.data
             else:
-                teamrecord = Teamrecord.objects.filter(Q(pk=param))
+                obj = Teams.objects.filter(Q(team_nickname__icontains=param))
+                teamserializer = TeamsSerializer(obj, many=True)
+                teamname = teamserializer.data[0]["team_name"]
+                teamrecord = Teamrecord.objects.filter(Q(pk=teamname))
                 serializer = TeamRecordSerializer(teamrecord, many=True)
-                teamObj = Teams.objects.filter(Q(team_name__startswith=param))
-                teamserializer = TeamsSerializer(teamObj, many=True)
                 team_pic = teamserializer.data[0]["team_pic"]
                 serializer.data[0]["team_pic"] = team_pic
             data.extend(serializer.data)
@@ -57,7 +58,7 @@ class epl(APIView):
 
                 stats_data = Stats.objects.filter(fk_pl__exact=player_id)
                 statsserializer = StatsSerializer(stats_data, many=True)
-                goals, assists, shots, min_played, card_yellow, card_red, passes, touches, fouls = 0
+                goals, assists, shots, min_played, card_yellow, card_red, passes, touches, fouls = [0, 0, 0, 0, 0, 0, 0, 0, 0]
                 for i in statsserializer.data:
                     goals = goals + int(i["goals"])
                     assists = assists + int(i["assists"])
@@ -91,10 +92,11 @@ class epl(APIView):
             data = []
             team1 = params["FC"][0]
             team2 = params["FC"][1]
-            t1 = Teams.objects.filter(Q(team_name__startswith=team1))
-            t2 = Teams.objects.filter(Q(team_name__startswith=team2))
+            t1 = Teams.objects.filter(Q(team_nickname__icontains=team1))
+            t2 = Teams.objects.filter(Q(team_nickname__icontains=team2))
             t1serializer = TeamsSerializer(t1, many=True)
             t2serializer = TeamsSerializer(t2, many=True)
+            print("at getGameRecord:", t1serializer.data, t2serializer.data)
             t1_id = t1serializer.data[0]["team_id"]
             t2_id = t2serializer.data[0]["team_id"]
             teamname1 = t1serializer.data[0]["team_name"]
@@ -114,11 +116,11 @@ class epl(APIView):
                 obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id)) & Q(game_date__startswith=d))
                 gameserializer = GamesSerializer(obj, many=True)
 
-            del gameserializer.data[0]["game_id"]
-            del gameserializer.data[0]["round_id"]
-            gameserializer.data[0]["home_team"] = teamname1
-            gameserializer.data[0]["away_team"] = teamname2
-
+            for i in gameserializer.data:
+                del i["game_id"]
+                del i["round_id"]
+                i["home_team"] = teamname1
+                i["away_team"] = teamname2
             data.extend(gameserializer.data)
             return data
 
@@ -126,7 +128,7 @@ class epl(APIView):
             print("at getRecord:", month, day)
             data = []
             team = params["FC"][0]
-            t = Teams.objects.filter(Q(team_name__startswith=team))
+            t = Teams.objects.filter(Q(team_nickname__icontains=team))
             teamserializer = TeamsSerializer(t, many=True)
             t_id = teamserializer.data[0]["team_id"]
 
@@ -167,7 +169,7 @@ class epl(APIView):
 
         data = []
         team = params["FC"][0]
-        t = Teams.objects.filter(Q(team_name__startswith=team))
+        t = Teams.objects.filter(Q(team_nickname__icontains=team))
         teamserializer = TeamsSerializer(t, many=True)
         t_id = teamserializer.data[0]["team_id"]
         

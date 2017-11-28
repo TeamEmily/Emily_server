@@ -26,6 +26,7 @@ class IntentAnalyzer():
 
     def checkParameters(self, sentence, intent):
         response = {}
+
         params = self.intentData[str(intent)]["params"]
         if "Date" in params:
             sentence, outputStr = self.getDate(sentence)
@@ -35,7 +36,7 @@ class IntentAnalyzer():
         for param in params:
             p = [idx for idx, val in enumerate(tokenized_sentence) if param == val[1]]
             if len(p) == 0:
-                if len(response[param]) > 0:
+                if param == "Date" and len(response[param]) > 0:
                     continue
                 response["error"] = "we cant find " + param + " " + "value"
             else:

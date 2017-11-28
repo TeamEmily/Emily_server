@@ -8,19 +8,29 @@ from weather.views import WeatherReporter
 import random
 
 intentAnalyzer = IntentAnalyzer()
-
+previous_intentNum = 0
+previous_intent = ""
 class getIntent(APIView):
 
     def get(self, request, format=None):
         string = request.GET.get('str')
         intent, intent_num = intentAnalyzer.analyzeIntent(string)
+        print("Previous Intent Number was:", previous_intentNum)
+        global previous_intentNum
+        global previous_intent
         if(intent_num == -1):
-            return Response({"error": intent})
+            # return Response({"error": intent})
+            intent_num = previous_intentNum
+            intent = previous_intent
         params = intentAnalyzer.checkParameters(string, intent_num)
+        print(params)
+        
         if ("error" in params.keys()):
             return Response({"error": params["error"]})
         else:
             data = self.getResult(params, intent_num)
+            previous_intent = intent
+            previous_intentNum = intent_num
             return Response({"intent": intent, "data": data})
 
     def getResult(self, params, intent):
