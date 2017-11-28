@@ -1,37 +1,54 @@
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from src.intentAnalyzer.intentAnalyzer import IntentAnalyzer
 from rest_framework.renderers import JSONRenderer
+from src.intentAnalyzer.intentAnalyzer import IntentAnalyzer
 from epl.views import epl
 from weather.views import WeatherReporter
 import random
 
 intentAnalyzer = IntentAnalyzer()
-previous_intentNum = 0
+previous_intentNum = -1
 previous_intent = ""
+previous_params = {}
 class getIntent(APIView):
 
     def get(self, request, format=None):
-        string = request.GET.get('str')
-        intent, intent_num = intentAnalyzer.analyzeIntent(string)
-        print("Previous Intent Number was:", previous_intentNum)
         global previous_intentNum
         global previous_intent
+        global previous_params
+
+        string = request.GET.get('str')
+        intent, intent_num = intentAnalyzer.analyzeIntent(string)
+        print("Analized intent is", intent_num)
+        print("Previous Intent Number was:", previous_intentNum)
+        print("Previous Parameter was:", previous_params)
+        
         if(intent_num == -1):
             # return Response({"error": intent})
-            intent_num = previous_intentNum
-            intent = previous_intent
+            if previous_intentNum == -1:
+                return Response({"error": intent})
+            else:
+                intent_num = previous_intentNum
+                intent = previous_intent
+                
         params = intentAnalyzer.checkParameters(string, intent_num)
-        print(params)
+        print("Analized params is", params)
         
         if ("error" in params.keys()):
-            return Response({"error": params["error"]})
-        else:
-            data = self.getResult(params, intent_num)
-            previous_intent = intent
-            previous_intentNum = intent_num
-            return Response({"intent": intent, "data": data})
+            # return Response({"error": params["error"]})
+            if len(previous_params) == 0:
+                return Response({"error": params["error"]})
+            else:
+                params = previous_params
+                
+        print("now Intent number is:", intent_num)
+        print("and params is:", params)
+        data = self.getResult(params, intent_num)
+        previous_intent = intent
+        previous_intentNum = intent_num
+        previous_params = params
+        return Response({"intent": intent, "data": data})
 
     def getResult(self, params, intent):
         funcMap = {

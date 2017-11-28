@@ -49,7 +49,6 @@ class IntentAnalyzer():
             outputStr = '00-00'
             return sentence, outputStr
         matchingStr = regex.search(sentence).group()
-        print("at GetDate:", regex.search(sentence))
         outputStr = ''
         if len(matchingStr) > 0:
             sentence = sentence.replace(matchingStr, '')
