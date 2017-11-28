@@ -5,16 +5,10 @@ from django.db.models import Q
 from epl.models import Teamrecord, Players, Teams, Stats, Games
 from epl.serializers import TeamRecordSerializer, PlayerRecordSerializer, TeamsSerializer, StatsSerializer, GamesSerializer, ScheduleSerializer
 import datetime
+import random
 from calendar import monthrange
 
 class epl(APIView):
-    def dateTimeTransformer(date, format=None):
-        date = date.split('-')
-        month = date[0]
-        day = date[1]
-        
-        return month, day
-
     def getRecord(params, format=None):
         data = []
         for param in params["FC"]:
@@ -31,7 +25,12 @@ class epl(APIView):
                 team_pic = teamserializer.data[0]["team_pic"]
                 serializer.data[0]["team_pic"] = team_pic
             data.extend(serializer.data)
-        return data
+        
+        message = ["검색하신 팀의 향후 일정이 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
+            "검색하신 팀의 최근 경기 결과가 궁금하시면, '최근 경기 결과가 어떻게 돼?' 라고 쳐보세요 :D",
+            "다른 팀의 승점도 궁금하신가요? '[팀 이름] 도 부탁해!', 라고 말씀하세요!"]
+        n = random.randrange(0, len(message))
+        return data, message[n]
 
     def getPlayerInfo(params, format=None):
         data = []
@@ -82,10 +81,19 @@ class epl(APIView):
                 playerserializer.data[0]["played_games"] = playedcount
                 
                 data.extend(playerserializer.data)
-            return data
+            message = ["다른 선수의 성적도 궁금하시면 '[선수 이름] 은? 라고 해주세요! 알려드리겠습니다 :D",
+            "[선수 이름] 도 부탁해! 라고 하시면 그 선수 성적도 보여 드릴께요! XD"]
+            n = random.randrange(0, len(message))
+            return data, message[n]
 
     def getGameRecord(params, format=None):
+        try:
+            params["Date"]
+        except KeyError:
+            params["Date"] = ["00-00"]
+
         date = params["Date"][0].split('-')
+        print("at getGameRecord", date)
         month = int(date[0])
         day = int(date[1])
         if len(params["FC"]) == 2:
@@ -134,7 +142,11 @@ class epl(APIView):
                 del i["game_id"]
                 del i["round_id"]
             data.extend(gameserializer.data)
-            return data
+            message = ["검색하신 팀의 향후 일정도 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
+            "검색하신 팀의 현재 순위가 궁금하시면, '순위도 알려줘!' 라고 쳐보세요 :D",
+            "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!"]
+            n = random.randrange(0, len(message))
+            return data, message[n]
 
         elif len(params["FC"]) == 1:
             data = []
@@ -174,10 +186,20 @@ class epl(APIView):
                 i["away_pic"] = away_pic
                 del i["game_id"]
                 del i["round_id"]
+
             data.extend(gameserializer.data)
-            return data
+            
+            message = ["검색하신 팀의 향후 일정도 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
+            "검색하신 팀의 현재 순위가 궁금하시면, '순위도 알려줘!' 라고 쳐보세요 :D",
+            "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!"]
+            n = random.randrange(0, len(message))
+            return data, message[n]
 
     def getSchedule(params, format=None):
+        try:
+            params["Date"]
+        except KeyError:
+            params["Date"] = ["00-00"]
         date = params["Date"][0].split('-')
         month = int(date[0])
         day = int(date[1])
@@ -226,4 +248,8 @@ class epl(APIView):
             i["home_pic"] = home_pic
             i["away_pic"] = away_pic
         data.extend(scdserializer.data)
-        return data
+        message = ["이 팀의 현재 승점이 궁금하시면 '승점은 몇 점이야?' 라고 해주세요! 알려드릴께요 :D",
+        "다른 팀의 일정도 알고 싶으시면 '[팀 이름] 은? 라고 물어보세요! 안내하겟읍니다 ( _ _)",
+        "'최근 경기 어떻게 됬어?' 라고 물어보시면 경기 결과를 알려드리겠습니다 :)"]
+        n = random.randrange(0, len(message))
+        return data, message[n]

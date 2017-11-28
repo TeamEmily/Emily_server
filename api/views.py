@@ -41,14 +41,14 @@ class getIntent(APIView):
                 return Response({"error": params["error"]})
             else:
                 params = previous_params
-                
+
         print("now Intent number is:", intent_num)
         print("and params is:", params)
-        data = self.getResult(params, intent_num)
+        data, message = self.getResult(params, intent_num)
         previous_intent = intent
         previous_intentNum = intent_num
         previous_params = params
-        return Response({"intent": intent, "data": data})
+        return Response({"intent": intent, "data": data, "message":message})
 
     def getResult(self, params, intent):
         funcMap = {
@@ -60,13 +60,16 @@ class getIntent(APIView):
             5: self.twentyfifth_night,
             6: epl.getSchedule
         }
-        return funcMap[intent](params)
+        data, message = funcMap[intent](params)
+        return data, message
 
     def sayHello(self, params):
         n = random.randrange(0, 4)
         greeting = ["너도 안녕", "반가워~", "좋은 하루~", "또 와주었구나?"]
-        return greeting[n]
+        message = ""
+        return greeting[n], message
 
     def twentyfifth_night(self, params):
         greeting = "살아있다"
-        return greeting
+        message = ""
+        return greeting, message
