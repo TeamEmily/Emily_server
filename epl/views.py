@@ -263,6 +263,7 @@ class epl(APIView):
         playerserializer = PlayerRecordSerializer(playerObj, many=True)
         player_id = playerserializer.data[0]["pl_id"]
         player_name = playerserializer.data[0]["pl_name"]
+        player_pic = playerserializer.data[0]["pl_pic"]
         teamid = playerserializer.data[0]["team"]
         player_in_team = False
         if len(params["FC"]) == 2:
@@ -275,13 +276,19 @@ class epl(APIView):
             t2serializer = TeamsSerializer(t2, many=True)
             t1_id = t1serializer.data[0]["team_id"]
             t2_id = t2serializer.data[0]["team_id"]
-            teamname1 = t1serializer.data[0]["team_name"]
-            teamname2 = t2serializer.data[0]["team_name"]
-            home_pic = t1serializer.data[0]["team_pic"]
-            away_pic = t2serializer.data[0]["team_pic"]
-            obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id)))
+            obj = Games.objects.filter((Q(home_team=t1_id) | Q(away_team=t1_id)) & (Q(home_team=t2_id) | Q(away_team=t2_id))).order_by('-game_date')
             gameserializer = GamesSerializer(obj, many=True)
 
+            home_id = gameserializer.data[0]["home_team"]
+            away_id = gameserializer.data[0]["away_team"]
+            t1 = Teams.objects.filter(Q(team_id=home_id))
+            t2 = Teams.objects.filter(Q(team_id=away_id))
+            t1serializer = TeamsSerializer(t1, many=True)
+            t2serializer = TeamsSerializer(t2, many=True)
+            teamname1 = t1serializer.data[0]["team_name"]
+            teamname2 = t2serializer.data[0]["team_name"]
+            t1pic = t1serializer.data[0]["team_pic"]
+            t2pic = t2serializer.data[0]["team_pic"]
             if teamid == t1_id or teamid == t2_id:
                 player_in_team = True
 
@@ -291,14 +298,27 @@ class epl(APIView):
             t = Teams.objects.filter(Q(team_nickname__icontains=team))
             teamserializer = TeamsSerializer(t, many=True)
             t_id = teamserializer.data[0]["team_id"]
-            obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id))
+            obj = Games.objects.filter(Q(home_team=t_id) | Q(away_team=t_id)).order_by(-'game_date')
             gameserializer = GamesSerializer(obj, many=True)
+
+            home_id = gameserializer.data[0]["home_team"]
+            away_id = gameserializer.data[0]["away_team"]
+            t1 = Teams.objects.filter(Q(team_id=home_id))
+            t2 = Teams.objects.filter(Q(team_id=away_id))
+            t1serializer = TeamsSerializer(t1, many=True)
+            t2serializer = TeamsSerializer(t2, many=True)
+            teamname1 = t1serializer.data[0]["team_name"]
+            teamname2 = t2serializer.data[0]["team_name"]
+            t1pic = t1serializer.data[0]["team_pic"]
+            t2pic = t2serializer.data[0]["team_pic"]
 
             if teamid == t_id:
                 player_in_team = True
         for i in gameserializer.data:
             gameid = i["game_id"]
             gamedate = i["game_date"]
+            home_score = i["home_score"]
+            away_score = i["away_score"]
             statsObj = Stats.objects.filter(Q(fk_game=gameid) & Q(fk_pl=player_id))
             sSerializer = PerformanceSerializer(statsObj, many=True)
             if len(sSerializer.data) == 0:
@@ -309,13 +329,18 @@ class epl(APIView):
                 sSerializer.data[0]["sub_with_id"] = subserializer.data[0]["pl_name"]
             sSerializer.data[0]["game_date"]=gamedate
             sSerializer.data[0]["pl_name"]=player_name
+            sSerializer.data[0]["pl_pic"]=player_pic
+            sSerializer.data[0]["home_team"]=teamname1
+            sSerializer.data[0]["away_team"]=teamname2
+            sSerializer.data[0]["home_score"]=home_score
+            sSerializer.data[0]["away_score"]=away_score
+            sSerializer.data[0]["home_pic"]=t1pic
+            sSerializer.data[0]["away_pic"]=t2pic
             del sSerializer.data[0]["fk_game"]
             del sSerializer.data[0]["fk_team"]
             del sSerializer.data[0]["fk_pl"]
             data.extend(sSerializer.data)
     
-
-
         if len(data) == 0 and player_in_team:
             message = "검색하신 선수는 선발/후보 명단에 들지 못했어요"
             return data, message

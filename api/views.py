@@ -114,7 +114,7 @@ class getIntent(APIView):
         noon_end = now.replace(hour=2, minute=0)
         dinner_start = now.replace(hour=6, minute=0)
         dinner_end = now.replace(hour=9, minute=0)
-        
+        message = ""
         if (midnight_start < now <= midnight_end) and nowP == "AM":
             message = "아직 안자고 뭐하세요-_-z 님도 개발자세요? 야식은 죄악이에요 XD"
         elif (midnight_end < now <= morning_end) and nowP == "AM":
@@ -129,7 +129,6 @@ class getIntent(APIView):
             message = "저녁엔 치킨이죠!"
         elif (dinner_end < now <= midnight_start) and nowP == "PM":
             message = "지금 밥 먹으면 살쪄요^^ 참아요ㅎ"
-        
         greeting = message
         return greeting, message
 
