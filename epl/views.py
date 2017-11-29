@@ -11,25 +11,28 @@ from calendar import monthrange
 class epl(APIView):
     def getTeamRecord(params, format=None):
         data = []
+        if params["FC"][0] == "리그":
+            params["FC"] = ["Arsenal", "Bournemouth", "Brighton", "Burnley", "Chelsea", "Crystal Palace",
+                        "Everton", "Huddersfield Town", "Leicester City", "Liverpool", "Manchester City", "Manchester United",
+                        "Newcastle United", "Southampton", "Stoke City", "Swansea City", "Tottenham Hotspur", "Watford", 
+                        "West Bromwich Albion", "West Ham United"]
+        print(params["FC"])
         for param in params["FC"]:
-            if param == "리그":
-                teamrecord = Teamrecord.objects.all()
-                serializer = TeamRecordSerializer(teamrecord, many=True)
-                message = "20개 팀의 모든 정보입니다! :D"
-                return serializer.data, message
-            else:
-                obj = Teams.objects.filter(Q(team_nickname__icontains=param))
+            obj = Teams.objects.filter(Q(team_nickname__icontains=param))
+            teamserializer = TeamsSerializer(obj, many=True)
+            if len(teamserializer.data) == 0:
+                obj = Teams.objects.filter(Q(team_name=param))
                 teamserializer = TeamsSerializer(obj, many=True)
-                teamname = teamserializer.data[0]["team_name"]
-                teamrecord = Teamrecord.objects.filter(Q(pk=teamname))
-                serializer = TeamRecordSerializer(teamrecord, many=True)
-                team_pic = teamserializer.data[0]["team_pic"]
-                serializer.data[0]["team_pic"] = team_pic
+            teamname = teamserializer.data[0]["team_name"]
+            teamrecord = Teamrecord.objects.filter(Q(pk=teamname))
+            serializer = TeamRecordSerializer(teamrecord, many=True)
+            team_pic = teamserializer.data[0]["team_pic"]
+            serializer.data[0]["team_pic"] = team_pic
             data.extend(serializer.data)
         
-        message = ["검색하신 팀의 향후 일정이 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
-            "검색하신 팀의 최근 경기 결과가 궁금하시면, '최근 경기 결과가 어떻게 돼?' 라고 쳐보세요 :D",
-            "다른 팀의 승점도 궁금하신가요? '[팀 이름] 도 부탁해!', 라고 말씀하세요!"]
+        message = ["검색하신 팀(들)의 향후 일정이 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
+            "검색하신 팀(들)의 최근 경기 결과가 궁금하시면, '최근 경기 결과가 어떻게 돼?' 라고 쳐보세요 :D",
+            "다른 팀(들)의 승점도 궁금하신가요? '[팀 이름] 도 부탁해!', 라고 말씀하세요!"]
         n = random.randrange(0, len(message))
         return data, message[n]
 

@@ -111,23 +111,23 @@ class getIntent(APIView):
         midnight_end = now.replace(hour=6, minute=0)
         morning_end = now.replace(hour=10, minute=0)
         noon_start = now.replace(hour=12, minute=0)
-        noon_end = now.replace(hour=2, minute=0)
-        dinner_start = now.replace(hour=6, minute=0)
-        dinner_end = now.replace(hour=9, minute=0)
+        noon_end = now.replace(hour=14, minute=0)
+        dinner_start = now.replace(hour=18, minute=0)
+        dinner_end = now.replace(hour=21, minute=0)
         message = ""
-        if (midnight_start < now <= midnight_end) and nowP == "AM":
+        if (midnight_start < now <= midnight_end):
             message = "아직 안자고 뭐하세요-_-z 님도 개발자세요? 야식은 죄악이에요 XD"
-        elif (midnight_end < now <= morning_end) and nowP == "AM":
+        elif (midnight_end < now <= morning_end):
             message = "아침 먹을 시간이긴 하네요! 저는 아침 잘 안 먹어서 제끼는데 님은 꼭 챙겨드세요 :D"
-        elif (morning_end < now <= noon_start) and nowP == "AM":
+        elif (morning_end < now <= noon_start):
             messgae = "아침 아직 안드셨어요? 님도 저처럼 아침 싫어하는군요!"
-        elif (noon_start < now <= noon_end) and nowP == "PM":
+        elif (noon_start < now <= noon_end):
             message = "저도 아침 안먹어서 죽겠네요 'ㅁ' 같이 학식 드쉴?"
-        elif (noon_end < now <= dinner_start) and nowP == "PM":
+        elif (noon_end < now <= dinner_start):
             message = "점심도 안 먹고 뭐하셨어요! 또 지금 먹고 저녁 늦게 먹을라고 그러죠?"
-        elif (dinner_start < now <= dinner_end) and nowP == "PM":
+        elif (dinner_start < now <= dinner_end):
             message = "저녁엔 치킨이죠!"
-        elif (dinner_end < now <= midnight_start) and nowP == "PM":
+        elif (dinner_end < now <= midnight_start):
             message = "지금 밥 먹으면 살쪄요^^ 참아요ㅎ"
         greeting = message
         return greeting, message

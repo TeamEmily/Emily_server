@@ -1,6 +1,7 @@
 {
   "training_data": [
     {"intent": 0, "sentence":"스물다섯번째 밤"},
+    {"intent": 1, "sentence":"안녕"},
     {"intent": 1, "sentence":"안녕 하세요"},
     {"intent": 1, "sentence":"반갑습니다"},
     {"intent": 1, "sentence":"오랜만 이네"},
