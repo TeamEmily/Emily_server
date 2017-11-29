@@ -29,7 +29,6 @@
     {"intent": 3, "sentence":"에 대해 알려줘"},
     {"intent": 3, "sentence":"선수 통합 스텟 좀 알려주겠니?"},
     {"intent": 3, "sentence":"선수 스텟 좀 알려주라"},
-    {"intent": 3, "sentence":"선수 지금까지 몇 골 넣었어?"},
     {"intent": 3, "sentence":"성적 종합해서 보여줘"},
     {"intent": 3, "sentence":"선수 성적 정리해서 알려줘"},
     {"intent": 4, "sentence":"몇월 몇일 경기 누가 이겼냐?"},
@@ -57,6 +56,10 @@
     {"intent": 7, "sentence":"경기에서 선수 활약상을 보여줘"},
     {"intent": 7, "sentence":"게임 선수 패스 몇 번 했어?"},
     {"intent": 7, "sentence":"팀 대 팀 게임에서 이 선수 어시 몇개야?"},
-    {"intent": 7, "sentence":"그 경기 선수 평점은 몇 점인지 알려줘"}
+    {"intent": 7, "sentence":"그 경기 선수 평점은 몇 점인지 알려줘"},
+    {"intent": 7, "sentence":"걔 오늘 주전이었냐?"},
+    {"intent": 7, "sentence":"벤치 대기 선수였냐?"},
+    {"intent": 7, "sentence":"볼 터치 몇 번 했어요?"},
+    {"intent": 7, "sentence":"느그흥 벤치 따숩다드나"}
   ]
 }

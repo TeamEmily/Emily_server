@@ -71,10 +71,10 @@ class getIntent(APIView):
     def sayHello(self, params):
         n = random.randrange(0, 4)
         greeting = ["너도 안녕", "반가워~", "좋은 하루~", "또 와주었구나?"]
-        message = ""
+        message = greeting[n]
         return greeting[n], message
 
     def twentyfifth_night(self, params):
         greeting = "살아있다"
-        message = ""
+        message = "살아있다"
         return greeting, message
