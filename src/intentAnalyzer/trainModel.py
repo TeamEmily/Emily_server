@@ -3,7 +3,7 @@ import numpy as np
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 tf.reset_default_graph()
-num_intent = 8
+num_intent = 10
 
 class Model():
     def __init__(self):

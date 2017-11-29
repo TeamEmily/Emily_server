@@ -1,34 +1,42 @@
 {
   "0": {
-    "name": "greeting",
-    "params": []
-  },
-  "1": {
-    "name": "weather",
-    "params": ["Date", "City"]
-  },
-  "2": {
-    "name": "team_stats",
-    "params": ["FC"]
-  },
-  "3": {
-    "name": "player_info",
-    "params": ["Players"]
-  },
-  "4": {
-    "name": "game_records",
-    "params": ["Date", "FC"]
-  },
-  "5": {
     "name": "twenty-fifth_night",
     "params": []
   },
+  "1": {
+    "name": "greeting",
+    "params": []
+  },
+  "2": {
+    "name": "hungry",
+    "params": []
+  },
+  "3": {
+    "name": "weather",
+    "params": ["Date", "City"]
+  },
+  "4": {
+    "name": "team_stats",
+    "params": ["FC"]
+  },
+  "5": {
+    "name": "player_info",
+    "params": ["Players"]
+  },
   "6": {
-    "name": "schedule",
+    "name": "game_records",
     "params": ["Date", "FC"]
   },
   "7": {
+    "name": "schedule",
+    "params": ["Date", "FC"]
+  },
+  "8": {
     "name": "player_performance",
     "params": ["FC", "Players"]
+  },
+  "9": {
+   "name": "bad_word",
+   "params": []
   }
 }

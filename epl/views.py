@@ -9,7 +9,7 @@ import random
 from calendar import monthrange
 
 class epl(APIView):
-    def getRecord(params, format=None):
+    def getTeamRecord(params, format=None):
         data = []
         for param in params["FC"]:
             if param == "리그":
@@ -92,7 +92,7 @@ class epl(APIView):
             params["Date"]
         except KeyError:
             params["Date"] = ["00-00"]
-
+        message = []
         date = params["Date"][0].split('-')
         print("at getGameRecord", date)
         month = int(date[0])
@@ -145,7 +145,8 @@ class epl(APIView):
             data.extend(gameserializer.data)
             message = ["검색하신 팀의 향후 일정도 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
             "검색하신 팀의 현재 순위가 궁금하시면, '순위도 알려줘!' 라고 쳐보세요 :D",
-            "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!"]
+            "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!",
+            ]
             n = random.randrange(0, len(message))
             return data, message[n]
 
