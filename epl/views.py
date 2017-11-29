@@ -147,7 +147,7 @@ class epl(APIView):
                 del i["round_id"]
             data.extend(gameserializer.data)
             message = ["검색하신 팀의 향후 일정도 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
-            "검색하신 팀의 현재 순위가 궁금하시면, '순위도 알려줘!' 라고 쳐보세요 :D",
+            "검색하신 팀의 현재 순위가 궁금하시면, '순위 알려줘!' 라고 쳐보세요 :D",
             "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!",
             ]
             n = random.randrange(0, len(message))
@@ -195,7 +195,7 @@ class epl(APIView):
             data.extend(gameserializer.data)
             
             message = ["검색하신 팀의 향후 일정도 궁금하세요? '향후 일정도 알려줘!' 라고 하시면 알려드릴께요!",
-            "검색하신 팀의 현재 순위가 궁금하시면, '순위도 알려줘!' 라고 쳐보세요 :D",
+            "검색하신 팀의 현재 순위가 궁금하시면, '순위 알려줘!' 라고 쳐보세요 :D",
             "다른 팀의 경기 결과도 궁금하신가요? '[팀 이름] 은?', 라고 말씀하세요!"]
             n = random.randrange(0, len(message))
             return data, message[n]
