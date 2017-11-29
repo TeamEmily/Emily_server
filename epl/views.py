@@ -15,7 +15,8 @@ class epl(APIView):
             if param == "리그":
                 teamrecord = Teamrecord.objects.all()
                 serializer = TeamRecordSerializer(teamrecord, many=True)
-                return serializer.data
+                message = "20개 팀의 모든 정보입니다! :D"
+                return serializer.data, message
             else:
                 obj = Teams.objects.filter(Q(team_nickname__icontains=param))
                 teamserializer = TeamsSerializer(obj, many=True)
@@ -206,7 +207,7 @@ class epl(APIView):
 
         data = []
         team = params["FC"][0]
-
+    
         if team == "리그":
             t = Teams.objects.all()
             teamserializer = TeamsSerializer(t, many=True)
@@ -214,40 +215,41 @@ class epl(APIView):
             obj = Games.objects.filter(Q(game_date__gt=d)).order_by('game_date')
             scdserializer = ScheduleSerializer(obj, many=True)
         else:
-            t = Teams.objects.filter(Q(team_nickname__icontains=team))
-            teamserializer = TeamsSerializer(t, many=True)
-            t_id = teamserializer.data[0]["team_id"]
-            
-            if month == 0 and day == 0:
-                d = datetime.datetime.today()
-                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__gt=d)).order_by('game_date')
-                scdserializer = ScheduleSerializer(obj, many=True)
-            elif month != 0 and day == 0:
-                startd = datetime.date(2017, month, 1)
-                endd = datetime.date(2017, month, monthrange(2017, month)[1])
-                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__range=(startd, endd))).order_by('game_date')
-                scdserializer = ScheduleSerializer(obj, many=True)
-            else:
-                d = datetime.date(2017, month, day)
-                obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__startswith=d))
-                scdserializer = ScheduleSerializer(obj, many=True)
+            for team in params["FC"]:
+                t = Teams.objects.filter(Q(team_nickname__icontains=team))
+                teamserializer = TeamsSerializer(t, many=True)
+                t_id = teamserializer.data[0]["team_id"]
+                
+                if month == 0 and day == 0:
+                    d = datetime.datetime.today()
+                    obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__gt=d)).order_by('game_date')
+                    scdserializer = ScheduleSerializer(obj, many=True)
+                elif month != 0 and day == 0:
+                    startd = datetime.date(2017, month, 1)
+                    endd = datetime.date(2017, month, monthrange(2017, month)[1])
+                    obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__range=(startd, endd))).order_by('game_date')
+                    scdserializer = ScheduleSerializer(obj, many=True)
+                else:
+                    d = datetime.date(2017, month, day)
+                    obj = Games.objects.filter((Q(home_team=t_id) | Q(away_team=t_id)) & Q(game_date__startswith=d))
+                    scdserializer = ScheduleSerializer(obj, many=True)
 
-        for i in scdserializer.data:
-            home_id = i["home_team"]
-            away_id = i["away_team"]
-            homeObj = Teams.objects.filter(Q(team_id=home_id))
-            awayObj = Teams.objects.filter(Q(team_id=away_id))
-            h_serializer = TeamsSerializer(homeObj, many=True)
-            aw_serializer = TeamsSerializer(awayObj, many=True)
-            home_name = h_serializer.data[0]["team_name"]
-            away_name = aw_serializer.data[0]["team_name"]
-            home_pic = h_serializer.data[0]["team_pic"]
-            away_pic = aw_serializer.data[0]["team_pic"]
-            i["home_team"] = home_name
-            i["away_team"] = away_name
-            i["home_pic"] = home_pic
-            i["away_pic"] = away_pic
-        data.extend(scdserializer.data)
+                for i in scdserializer.data:
+                    home_id = i["home_team"]
+                    away_id = i["away_team"]
+                    homeObj = Teams.objects.filter(Q(team_id=home_id))
+                    awayObj = Teams.objects.filter(Q(team_id=away_id))
+                    h_serializer = TeamsSerializer(homeObj, many=True)
+                    aw_serializer = TeamsSerializer(awayObj, many=True)
+                    home_name = h_serializer.data[0]["team_name"]
+                    away_name = aw_serializer.data[0]["team_name"]
+                    home_pic = h_serializer.data[0]["team_pic"]
+                    away_pic = aw_serializer.data[0]["team_pic"]
+                    i["home_team"] = home_name
+                    i["away_team"] = away_name
+                    i["home_pic"] = home_pic
+                    i["away_pic"] = away_pic
+                data.extend(scdserializer.data)
         message = ["이 팀의 현재 승점이 궁금하시면 '승점은 몇 점이야?' 라고 해주세요! 알려드릴께요 :D",
         "다른 팀의 일정도 알고 싶으시면 '[팀 이름] 은? 라고 물어보세요! 안내하겟읍니다 ( _ _)",
         "'최근 경기 어떻게 됬어?' 라고 물어보시면 경기 결과를 알려드리겠습니다 :)"]

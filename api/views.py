@@ -8,7 +8,7 @@ from weather.views import WeatherReporter
 import random
 
 intentAnalyzer = IntentAnalyzer()
-previous_intentNum = -1
+previous_intentNum = None
 previous_intent = ""
 previous_params = {}
 class getIntent(APIView):
@@ -23,28 +23,41 @@ class getIntent(APIView):
         print("Analized intent is", intent_num)
         print("Previous Intent Number was:", previous_intentNum)
         print("Previous Parameter was:", previous_params)
-        temp_intent_num = intent_num
-        temp_intent = intent
-        if(intent_num == -1):
+        temp_intent, temp_intent_num = intent, intent_num
+        if(intent_num == None):
             # return Response({"error": intent})
-            if previous_intentNum == -1:
-                return Response({"error": intent})
+            if previous_intentNum == None:
+                return Response({"intent": intent, "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
             else:
                 intent_num = previous_intentNum
                 intent = previous_intent
                 
         params = intentAnalyzer.checkParameters(string, intent_num)
         print("Analized params is", params)
-        
-        if ("error" in params.keys()):
-            # return Response({"error": params["error"]})
-            if len(previous_params) == 0:
-                return Response({"error": params["error"]})
-            else:
-                print("im here")
-                previous_params.update(params)
-                params = previous_params
-                del params['error']
+        for param in params:
+            if params.get(param) == None:
+                try:
+                    previous_params[param]
+                except KeyError:
+                    return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
+                else:
+                    if previous_params[param] == None:
+                        return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
+                    elif temp_intent_num == None:
+                        return Response({"intent": temp_intent, "message": "죄송합니다.. 의도 파악이 어렵네요..."})
+                    else:
+                        params[param] = previous_params[param]
+
+            
+        # if ("error" in params.keys()):
+        #     # return Response({"error": params["error"]})
+        #     if len(previous_params) == 0:
+        #         return Response({"error": params["error"]})
+        #     else:
+        #         print("im here")
+        #         previous_params.update(params)
+        #         params = previous_params
+        #         del params['error']
 
         print("now Intent number is:", intent_num)
         print("and params is:", params)

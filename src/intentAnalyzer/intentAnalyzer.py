@@ -20,7 +20,7 @@ class IntentAnalyzer():
         x_data = self.utils.create_x_data(tokenized_str)
         intent_index = self.model.predict([x_data])
         if intent_index == -1:
-            return "Sorry We can't find intent", -1
+            return "Error", None
         else:
             return self.intentData[str(intent_index)]["name"], intent_index
 
@@ -38,7 +38,7 @@ class IntentAnalyzer():
             if len(p) == 0:
                 if param == "Date" and len(response[param]) > 0:
                     continue
-                response["error"] = "we cant find " + param + " " + "value"
+                response[param] = None
             else:
                 response[param] = [tokenized_sentence[i][0] for i in p]
         return response
