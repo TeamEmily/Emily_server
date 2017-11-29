@@ -24,6 +24,7 @@ class getIntent(APIView):
         print("Previous Intent Number was:", previous_intentNum)
         print("Previous Parameter was:", previous_params)
         temp_intent, temp_intent_num = intent, intent_num
+        flag = False
         if(intent_num == None):
             # return Response({"error": intent})
             if previous_intentNum == None:
@@ -31,20 +32,27 @@ class getIntent(APIView):
             else:
                 intent_num = previous_intentNum
                 intent = previous_intent
-                
+                flag = True
+
         params = intentAnalyzer.checkParameters(string, intent_num)
-        print("Analized params is", params)
+
+        #### params = {"FC": None, "Players":"케인"}
+        flag2 = False
+        for param in params:
+            if params[param] != None:
+                if param != "Date":
+                    flag2 = True
+        if flag and not flag2:
+            return Response({"intent": intent, "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
         for param in params:
             if params.get(param) == None:
                 try:
                     previous_params[param]
-                except KeyError:
+                except KeyError: # {"Date", "FC"}
                     return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
                 else:
                     if previous_params[param] == None:
                         return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
-                    elif temp_intent_num == None:
-                        return Response({"intent": temp_intent, "message": "죄송합니다.. 의도 파악이 어렵네요..."})
                     else:
                         params[param] = previous_params[param]
 
@@ -78,7 +86,8 @@ class getIntent(APIView):
             6: epl.getGameRecord,
             7: epl.getSchedule,
             8: epl.playerPerformance,
-            9: self.badWord
+            9: self.badWord,
+            10: self.tryExit
         }
         data, message = funcMap[intent](params)
         return data, message
@@ -131,4 +140,9 @@ class getIntent(APIView):
         ".... 죄송합니다."]
         n = random.randrange(0, len(message))
         greeting = message[n]
-        return gretting, message
+        return greeting, message
+
+    def tryExit(self, params):
+        message = "정말 나가시겠어요?"
+        greeting = message[n]
+        return greeting, message

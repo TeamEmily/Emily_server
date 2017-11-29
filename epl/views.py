@@ -330,6 +330,7 @@ class epl(APIView):
                 data.extend(sSerializer.data)
         
         message = ["이 경기의 다른 선수의 퍼포먼스도 궁금하시다면 [선수 이름] 도 알려줘! 라고 말해주세요 :D",
-        "'성적 종합해서 보여줘' 라고 말씀하시면 이번 시즌 이 선수의 종합 스텟을 보여드릴게요 XD"]
+        "'성적 종합해서 보여줘' 라고 말씀하시면 이번 시즌 이 선수의 종합 스텟을 보여드릴게요 XD",
+        "이 게임의 결과는 '경기는 어떻게 됬어?' 로 검색해보세요!"]
         n = random.randrange(0, len(message))
         return data, message[n]

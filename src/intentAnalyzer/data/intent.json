@@ -38,5 +38,9 @@
   "9": {
    "name": "bad_word",
    "params": []
+  },
+  "10": {
+    "name": "exit",
+    "params": []
   }
 }
