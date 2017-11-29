@@ -69,6 +69,10 @@
     {"intent": 9, "sentence":"좀 알아들어라"},
     {"intent": 9, "sentence":"왜 그렇게 못 알아들어"},
     {"intent": 9, "sentence":"병신"},
-    {"intent": 9, "sentence":"멍청아 문맹이니?"}
+    {"intent": 9, "sentence":"멍청아 문맹이니?"},
+    {"intent": 10, "sentence":"나 이제 갈래"},
+    {"intent": 10, "sentence":"꺼져"},
+    {"intent": 10, "sentence":"나 갈게"},
+    {"intent": 10, "sentence":"앱을 종료할께"}
   ]
 }

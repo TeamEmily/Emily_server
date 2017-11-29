@@ -28,7 +28,7 @@ class getIntent(APIView):
         if(intent_num == None):
             # return Response({"error": intent})
             if previous_intentNum == None:
-                return Response({"intent": intent, "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
+                return Response({"intent": "greeting", "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
             else:
                 intent_num = previous_intentNum
                 intent = previous_intent
@@ -43,16 +43,16 @@ class getIntent(APIView):
                 if param != "Date":
                     flag2 = True
         if flag and not flag2:
-            return Response({"intent": intent, "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
+            return Response({"intent": "greeting", "message":"죄송해요ㅠ 뭘 원하시는지 알 수가 없네요..."})
         for param in params:
             if params.get(param) == None:
                 try:
                     previous_params[param]
                 except KeyError: # {"Date", "FC"}
-                    return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
+                    return Response({"intent": "greeting", "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
                 else:
                     if previous_params[param] == None:
-                        return Response({"intent": intent, "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
+                        return Response({"intent": "greeting", "message": "죄송해요ㅠ "+param+"이(가) 뭔지 몰라서 알려드릴수 없어요. :("})
                     else:
                         params[param] = previous_params[param]
 
@@ -140,9 +140,9 @@ class getIntent(APIView):
         ".... 죄송합니다."]
         n = random.randrange(0, len(message))
         greeting = message[n]
-        return greeting, message
+        return greeting, message[n]
 
     def tryExit(self, params):
         message = "정말 나가시겠어요?"
-        greeting = message[n]
+        greeting = message
         return greeting, message
